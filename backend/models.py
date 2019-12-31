@@ -24,7 +24,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
-    travels = db.relationship('Travel', backref='traveler', lazy='dynamic')
+    posts = db.relationship('Posts', backref='traveler', lazy='dynamic')
     followed = db.relationship('Follow', foreign_keys=[Follow.follower_id], backref=db.backref('follower', lazy='joined'),
                                lazy='dynamic', cascade='all, delete-orphan')
     followers = db.relationship('Follow',
@@ -32,6 +32,7 @@ class User(db.Model, UserMixin):
                                 backref=db.backref('followed', lazy='joined'),
                                 lazy='dynamic',
                                 cascade='all, delete-orphan')
+    subscribes = db.relationship('Posts')
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
@@ -61,7 +62,7 @@ class User(db.Model, UserMixin):
             follower_id=user.id).first() is not None
 
 
-class Travel(db.Model):
+class Posts(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.Text, nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -73,7 +74,8 @@ class Travel(db.Model):
     latitude = db.Column(db.Integer, nullable=False)
     longitude = db.Column(db.Integer, nullable=False)
     content = db.Column(db.Text, nullable=False)
+    subscribers = db.relationship('User')
 
     def __repr__(self):
-        return f"Travel('{self.date_posted}')"
+        return f"Posts('{self.date_posted}')"
 
