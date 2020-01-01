@@ -16,6 +16,7 @@ class Notification(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    kind = db.Column(db.String(10), nullable=False)
     def __repr__(self):
         return f"Notification('{self.user_id}', '{self.post_id}')"
 
