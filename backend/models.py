@@ -3,6 +3,21 @@ from backend import db, login_manager
 from flask_login import UserMixin
 
 
+class Subscribe(db.Model):
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), primary_key=True)
+
+    def __repr__(self):
+        return f"Subscribe('{self.user_id}', '{self.post_id}')"
+
+
+class Notification(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    def __repr__(self):
+        return f"Notification('{self.user_id}', '{self.post_id}')"
 
 
 class Follow(db.Model):
@@ -32,8 +47,10 @@ class User(db.Model, UserMixin):
                                 backref=db.backref('followed', lazy='joined'),
                                 lazy='dynamic',
                                 cascade='all, delete-orphan')
-    subscribes = db.relationship('Posts')
-
+    subscribes = db.relationship('Subscribe', foreign_keys=[Subscribe.user_id], backref=db.backref('subscriber', lazy='joined'),
+                               lazy='dynamic', cascade='all, delete-orphan')
+    notifications = db.relationship('Notification', foreign_keys=[Notification.user_id], backref=db.backref('user', lazy='joined'),
+                               lazy='dynamic', cascade='all, delete-orphan')
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
 
@@ -74,7 +91,8 @@ class Posts(db.Model):
     latitude = db.Column(db.Integer, nullable=False)
     longitude = db.Column(db.Integer, nullable=False)
     content = db.Column(db.Text, nullable=False)
-    subscribers = db.relationship('User')
+    subscribers = db.relationship('Subscribe', foreign_keys=[Subscribe.post_id], backref=db.backref('post', lazy='joined'),
+                               lazy='dynamic', cascade='all, delete-orphan')
 
     def __repr__(self):
         return f"Posts('{self.date_posted}')"

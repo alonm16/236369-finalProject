@@ -4,7 +4,7 @@ import secrets
 from PIL import Image
 from flask import url_for, request, abort, jsonify, make_response
 from backend import app, db, bcrypt, login_manager, geolocator
-from backend.models import User, Posts, Follow
+from backend.models import User, Posts, Follow, Subscribe, Notification
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_jwt_extended import (create_access_token)
 import datetime
