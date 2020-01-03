@@ -131,6 +131,20 @@ def is_following_me(user_id):
         return 'True'
     return 'False'
 
+
+@app.route('/follow/<int:user_id>', methods=['POST', 'DELETE'])
+@login_required
+def follow(user_id):
+    user = User.query.get_or_404(user_id)
+    if not current_user.is_following(user):
+        current_user.follow(user)
+    else:
+        current_user.unfollow(user)
+
+    db.session.commit()
+    return 'True'
+
+
 def date_between(start_date, end_date, start_date_arg, end_date_arg):
     start_date_arg_converted = datetime.datetime.strptime(start_date_arg.split('T')[0], '%Y-%m-%d').date()
     end_date_arg_converted = datetime.datetime.strptime(end_date_arg.split('T')[0], '%Y-%m-%d').date()
