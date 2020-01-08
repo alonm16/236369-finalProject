@@ -148,7 +148,9 @@ export class Profile extends Component{
                                                height="200" width="200"
                                           />
                                           <h1 className="account-heading">{this.state.username}</h1>
-                                          <p className="text-secondary">{this.state.email}   {(this.state.current_user != this.props.match.params.id) && this.state.isFollowingMe &&
+                                          <p className="text-secondary">{this.state.email}
+                                              <h5>Following: {this.state.followed_amount} &nbsp;&nbsp;&nbsp;&nbsp; Followers: {this.state.followers_amount}</h5>
+                                          {(this.state.current_user != this.props.match.params.id) && this.state.isFollowingMe &&
                                                    <h5><Badge pill variant="secondary">Follows you</Badge></h5>}</p>
                                                {(this.state.current_user != this.props.match.params.id) && <Button
                                                   variant="outline-primary"

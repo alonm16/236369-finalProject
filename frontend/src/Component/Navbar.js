@@ -125,6 +125,11 @@ class Navbar extends Component {
                 Home
               </Link>
             </li>
+             <li className="nav-item">
+              <Link to="/AddPost" className="nav-link">
+                New post
+              </Link>
+            </li>
           </ul>
           {localStorage.usertoken ? userLink : loginRegLink}
 

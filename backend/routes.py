@@ -84,6 +84,28 @@ def register():
     return 'Created'
 
 
+@app.route('/users/<int:user_id>', methods=['PUT'])
+@login_required
+def user_update(user_id):
+    updated_user = request.get_json()
+    user = User.query.get_or_404(user_id)
+    user_by_username = User.query.filter_by(username=updated_user['username']).first()
+    user_by_email = User.query.filter_by(email=updated_user['email']).first()
+    if user_by_username and user.id != user_by_username.id and user_by_username.username == updated_user['username']:
+        return 'Username Taken'
+    if user_by_email and user.id != user_by_email.id and user_by_email.email == updated_user['email']:
+        return 'Email Taken'
+    user.birth_date = updated_user['birth_date']
+    user.email = updated_user['email']
+    user.first_name = updated_user['first_name']
+    user.last_name = updated_user['last_name']
+    user.gender = updated_user['gender']
+    user.username = updated_user['username']
+    db.session.add(user)
+    db.session.commit()
+    return 'Updated'
+
+
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
@@ -143,6 +165,23 @@ def follow(user_id):
 
     db.session.commit()
     return 'True'
+
+
+@app.route("/addPost", methods=['POST'])
+@login_required
+def addPost():
+    if current_user.is_authenticated:
+        abort(400)
+    data = request.get_json()
+
+    if not data or not 'title' in data or not 'content' in data:
+        abort(400)
+
+    post = Posts(title=data['title'], date_posted=datetime.datetime.now(), start_date=datetime.datetime.now(),
+                 end_date=datetime.datetime.now(), country='Israel', city='Haifa', content=data['content'])
+    db.session.add(post)
+    db.session.commit()
+    return 'Created'
 
 
 def date_between(start_date, end_date, start_date_arg, end_date_arg):

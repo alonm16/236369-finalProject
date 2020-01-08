@@ -3,6 +3,7 @@ import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
 import Alert from "reactstrap/es/Alert";
 import axios from "axios";
+import AddPost from "./AddPost";
 
 export const register = newUser => {
   return axios

@@ -6,6 +6,7 @@ import Landing from './Component/Landing'
 import Login from './Component/Login'
 import Register from './Component/Register'
 import Profile from './Component/Profile'
+import AddPost from './Component/AddPost'
 import {Redirect} from "react-router-dom";
 
 
@@ -40,7 +41,7 @@ class App extends Component {
                 isLoggedIn() ? (
                     <Profile {...props} />) : (<Redirect to="/login"/> )
             )}/>
-
+            <Route exact path="/AddPost" component={AddPost} />
           </div>
         </div>
       </Router>

@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="196b0e7e-5890-4b93-8076-ce3d7f8ffffd" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/src/Component/AddPost.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/Component/Navbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Component/Navbar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/Component/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Component/Profile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/Component/Register.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Component/Register.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -29,6 +32,13 @@
   </component>
   <component name="FavoritesManager">
     <favorites_list name="FlaskProject" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -103,7 +113,10 @@
       <workItem from="1577739245023" duration="737000" />
       <workItem from="1577803389087" duration="11399000" />
       <workItem from="1577881952378" duration="19817000" />
-      <workItem from="1578058514325" duration="7604000" />
+      <workItem from="1578058514325" duration="8198000" />
+      <workItem from="1578296356643" duration="12420000" />
+      <workItem from="1578510810185" duration="1030000" />
+      <workItem from="1578513769541" duration="7934000" />
     </task>
     <servers />
   </component>
@@ -122,6 +135,17 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/frontend/src/Component/About.js</url>
+          <line>380</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/FlaskProject$run.coverage" NAME="run Coverage Results" MODIFIED="1577554179966" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
