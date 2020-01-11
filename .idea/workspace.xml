@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="196b0e7e-5890-4b93-8076-ce3d7f8ffffd" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/Component/AddPost.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/Component/Navbar.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Component/Navbar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/Component/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Component/Profile.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/Component/Register.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Component/Register.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -116,7 +110,9 @@
       <workItem from="1578058514325" duration="8198000" />
       <workItem from="1578296356643" duration="12420000" />
       <workItem from="1578510810185" duration="1030000" />
-      <workItem from="1578513769541" duration="7934000" />
+      <workItem from="1578513769541" duration="8005000" />
+      <workItem from="1578653145743" duration="1791000" />
+      <workItem from="1578656324138" duration="3283000" />
     </task>
     <servers />
   </component>
