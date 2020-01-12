@@ -195,8 +195,8 @@ export class Profile extends Component{
                 {this.state.followingFlag  ? <Users id ={this.props.match.params.id} type={2} flag={this.state.isFollowing}/> : <br/>}
                     <div className="text-center">
                     {(this.state.current_user == this.props.match.params.id) && <Button
-                              variant="outline-primary"
                               onClick={this.deleteAccount.bind(this)}
+                              variant="outline-danger"
                             >
                               Delete Account
                             </Button> }
