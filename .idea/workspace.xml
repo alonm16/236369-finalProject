@@ -4,7 +4,6 @@
     <list default="true" id="196b0e7e-5890-4b93-8076-ce3d7f8ffffd" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/Component/AddPost.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Component/AddPost.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -116,7 +115,7 @@
       <workItem from="1578653145743" duration="1791000" />
       <workItem from="1578656324138" duration="3283000" />
       <workItem from="1578822721581" duration="171000" />
-      <workItem from="1578846159092" duration="7452000" />
+      <workItem from="1578846159092" duration="8166000" />
     </task>
     <servers />
   </component>

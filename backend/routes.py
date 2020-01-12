@@ -174,9 +174,9 @@ def addPost():
     if not data or not 'title' in data or not 'content' in data:
         abort(400)
 
-    post = Posts(title=data['title'], date_posted=datetime.datetime.now(), start_date=datetime.datetime.now(),
-                 end_date=datetime.datetime.now(), country=data['country'], city=data['city'], content=data['content']
-                 , latitude=5)
+    post = Posts(title=data['title'], date_posted=datetime.datetime.now(), start_date=data['startDate'],
+                 end_date=data['endDate'], country=data['country'], city=data['city'], content=data['content']
+                 , latitude=5, longitude=5, traveler=current_user)
     db.session.add(post)
     db.session.commit()
     return 'Created'
