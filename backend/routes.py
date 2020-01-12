@@ -169,6 +169,7 @@ def follow(user_id):
 @app.route("/addPost", methods=['POST'])
 @login_required
 def addPost():
+    print('what')
     data = request.get_json()
     if not data or not 'title' in data or not 'content' in data:
         abort(400)
@@ -194,6 +195,20 @@ def deletePost(post_id):
         db.session.add(notification)
     db.session.delete(post)
     db.session.commit()
+    return 'True'
+
+
+@app.route("/deleteAccount/<int:user_id>", methods=['DELETE'])
+def deleteAccount(user_id):
+    print('hello')
+    user = User.query.get_or_404(user_id)
+    print(user_id)
+    print(user.id)
+    print('hi')
+    db.session.delete(user)
+    print('bye')
+    db.session.commit()
+    print('see u')
     return 'True'
 
 

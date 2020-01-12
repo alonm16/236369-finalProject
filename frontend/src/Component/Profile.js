@@ -124,6 +124,22 @@ export class Profile extends Component{
             });
    }
 
+   deleteAccount(e) {
+      e.preventDefault()
+      axios.defaults.withCredentials = true;
+      const id = this.state.current_user;
+      axios.get('http://127.0.0.1:5000/logout').then(response => {
+          localStorage.removeItem('usertoken')
+          this.props.history.push(`/`)
+         axios.defaults.withCredentials = true;
+         axios.delete('http://127.0.0.1:5000/deleteAccount/' + id);
+      })
+        .catch(err => {
+          console.log(err)
+        })
+  }
+
+
    updateMenuInfo(info){
         this.setState({
               username: info.username,
@@ -177,7 +193,14 @@ export class Profile extends Component{
                     updatePic={this.updateMenuPic.bind(this)} /> : <br/>}
                 {this.state.followersFlag  ? <Users id ={this.props.match.params.id} type={1} flag={this.state.isFollowing}/> : <br/>}
                 {this.state.followingFlag  ? <Users id ={this.props.match.params.id} type={2} flag={this.state.isFollowing}/> : <br/>}
-
+                    <div className="text-center">
+                    {(this.state.current_user == this.props.match.params.id) && <Button
+                              variant="outline-primary"
+                              onClick={this.deleteAccount.bind(this)}
+                            >
+                              Delete Account
+                            </Button> }
+                    </div>
             </div>
 
         )

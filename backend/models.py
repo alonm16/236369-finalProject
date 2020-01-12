@@ -40,7 +40,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(60), nullable=False)
     image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
-    posts = db.relationship('Posts', backref='traveler', lazy='dynamic')
+    posts = db.relationship('Posts', backref='traveler', lazy='dynamic',cascade='all, delete-orphan')
     followed = db.relationship('Follow', foreign_keys=[Follow.follower_id], backref=db.backref('follower', lazy='joined'),
                                lazy='dynamic', cascade='all, delete-orphan')
     followers = db.relationship('Follow',
