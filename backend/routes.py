@@ -133,7 +133,6 @@ def logout():
     return 'Logged Out', 201
 
 
-
 @app.route('/is_following/<int:user_id>', methods=['GET'])
 @login_required
 def is_following(user_id):
@@ -170,15 +169,14 @@ def follow(user_id):
 @app.route("/addPost", methods=['POST'])
 @login_required
 def addPost():
-    if current_user.is_authenticated:
-        abort(400)
     data = request.get_json()
-
+    print ('hello')
     if not data or not 'title' in data or not 'content' in data:
         abort(400)
 
     post = Posts(title=data['title'], date_posted=datetime.datetime.now(), start_date=datetime.datetime.now(),
-                 end_date=datetime.datetime.now(), country='Israel', city='Haifa', content=data['content'])
+                 end_date=datetime.datetime.now(), country=data['country'], city=data['city'], content=data['content']
+                 , latitude=5)
     db.session.add(post)
     db.session.commit()
     return 'Created'
