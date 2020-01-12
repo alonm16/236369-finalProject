@@ -170,7 +170,6 @@ def follow(user_id):
 @login_required
 def addPost():
     data = request.get_json()
-    print ('hello')
     if not data or not 'title' in data or not 'content' in data:
         abort(400)
 
@@ -180,6 +179,22 @@ def addPost():
     db.session.add(post)
     db.session.commit()
     return 'Created'
+
+
+@app.route("/deletePost/<int:post_id>", methods=['DELETE'])
+@login_required
+def deletePost(post_id):
+    post = Posts.query.get_or_404(post_id)
+    if post.user_id != current_user.id:
+        return 'Not user post'
+    subscribers = post.subscribers
+    for sub in subscribers:
+        notification = Notification(user_id=sub.user_id, post_id=post.id, timestamp=atetime.datetime.now(),
+                                    kind="delete")
+        db.session.add(notification)
+    db.session.delete(post)
+    db.session.commit()
+    return 'True'
 
 
 def date_between(start_date, end_date, start_date_arg, end_date_arg):
