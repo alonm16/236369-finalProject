@@ -200,6 +200,16 @@ def deletePost(post_id):
     return 'True'
 
 
+@app.route("/posts", methods=['GET'])
+def get_posts():
+    all_posts = []
+    for post in Posts.query.all():
+        all_posts.append({'id': post.id, 'title': post.title, 'date_posted': post.date_posted, 'user_id': post.user_id,
+                          'start_date': post.start_date, 'end_date': post.end_date, 'country': post.country,
+                          'city': post.city, 'latitude': post.latitude, 'content': post.content})
+    return jsonify(all_posts)
+
+
 @app.route("/deleteAccount/<int:user_id>", methods=['DELETE'])
 def deleteAccount(user_id):
     print('hello')

@@ -134,7 +134,7 @@ function EditPostFunc(props){
                 <DatePicker
                  name="startDate"
                  selected={new Date(props.startDate)}
-                 onChange={this.handleChangeStart}
+                 onChange={props.handleChangeStart}
                  dateFormat="dd/MM/yyyy"
                  maxDate={new Date()}
                 />
@@ -144,7 +144,7 @@ function EditPostFunc(props){
                 <DatePicker
                  name="endDate"
                  selected={new Date(props.endDate)}
-                 onChange={this.handleChangeEnd}
+                 onChange={props.handleChangeEnd}
                  dateFormat="dd/MM/yyyy"
                  maxDate={new Date()}
                 />
@@ -160,6 +160,8 @@ function EditPostFunc(props){
           </div>
   );
 }
+
+
 
 export class EditPost extends Component {
   constructor() {
@@ -197,7 +199,7 @@ export class EditPost extends Component {
 
         axios.get('http://127.0.0.1:5000/EditPost/' + this.props.id).then((response) => {
                 this.setState({
-                   title: response.data.title,
+                    title: response.data.title,
                   country: response.data.country,
                   city: response.data.city,
                   content: response.data.content,
@@ -224,7 +226,17 @@ export class EditPost extends Component {
     if (!this.state.flag)
       this.componentDidMount();
   }
+  handleChangeStart = date => {
+    this.setState({
+      startDate: date
+    });
+  };
 
+  handleChangeEnd = date => {
+    this.setState({
+      endDate: date
+    });
+  };
 
   onChange(e) {
       //  e.preventDefault()
