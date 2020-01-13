@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
+import {Map, TileLayer, Marker, Popup, MapControl, withLeaflet} from 'react-leaflet';
+import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import ReactLeafletSearch from "react-leaflet-search";
 import Alert from "reactstrap/es/Alert";
 import axios from "axios";
+
+
 
 export const addPost = newPost => {
   return axios
@@ -13,11 +18,14 @@ export const addPost = newPost => {
       country: newPost.country,
       city: newPost.city,
       content: newPost.content,
+      latitude: newPost.latitude,
+      longitude: newPost.longitude
+
     })
     .then(response => {
         return response.data
     })
-}
+};
 
 const validateForm = (errors) => {
   let valid = true;
@@ -37,6 +45,10 @@ class AddPost extends Component {
       country: '',
       city: '',
       content: '',
+      lat: 51.505,
+      lng: -0.09,
+      zoom: 13,
+      markers: [],
       errors: {
           title: '',
           country: '',
@@ -100,7 +112,12 @@ class AddPost extends Component {
   onSubmit(e) {
     e.preventDefault()
     this.setState({invalid: 0});
-
+    if(this.state.markers.length==0)
+        {
+             this.setState({invalid: 1});
+             return;
+        }
+     console.log(this.state.markers);
      const newPost = {
       title: this.state.title,
       startDate: this.state.startDate,
@@ -108,6 +125,8 @@ class AddPost extends Component {
       country: this.state.country,
       city: this.state.city,
       content: this.state.content,
+      latitude: this.state.markers[0]['lat'] ,
+      longitude: this.state.markers[0]['lng']
     };
 
      if (validateForm(this.state.errors)) {
@@ -122,6 +141,14 @@ class AddPost extends Component {
      }
   }
 
+  addMarker = (e) => {
+    const markers = [];
+    markers.push(e.latlng);
+    this.setState({markers})
+  };
+
+
+
   render() {
     return (
       <div className="container">
@@ -130,6 +157,34 @@ class AddPost extends Component {
             <form noValidate onSubmit={this.onSubmit}>
               <h1 className="h3 mb-3 font-weight-normal">Add Post</h1>
               <div className="form-group">
+             <Map
+            center={[51.505, -0.09]}
+            onClick={this.addMarker}
+            zoom={13}
+            >
+                 <ReactLeafletSearch  position="topleft"
+                    inputPlaceholder="Enter a place"
+                    search={[]} // Setting this to [lat, lng] gives initial search input to the component and map flies to that coordinates, its like search from props not from user
+                    zoom={12} // Default value is 10
+                    showMarker={true}
+                    showPopup={true}
+                    openSearchOnLoad={false} // By default there's a search icon which opens the input when clicked. Setting this to true opens the search by default.
+                    closeResultsOnClick={true} // By default, the search results remain when you click on one, and the map flies to the location of the result. But you might want to save space on your map by closing the results when one is clicked. The results are shown again (without another search) when focus is returned to the search input.
+                    providerOptions={{searchBounds: []}} // The BingMap and OpenStreetMap providers both accept bounding coordinates in [se,nw] format. Note that in the case of OpenStreetMap, this only weights the results and doesn't exclude things out of bounds.
+                    customProvider={undefined | {search: (searchString)=> {}}}  />
+
+            <TileLayer
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+            />
+            {this.state.markers.map((position, idx) =>
+              <Marker key={`marker-${idx}`} position={position}>
+              <Popup>
+                <span>A pretty CSS3 popup. <br/> Easily customizable.</span>
+              </Popup>
+            </Marker>
+            )}
+          </Map>
                 <label htmlFor="name">Title</label>
                 <input
                   type="text"
@@ -190,7 +245,6 @@ class AddPost extends Component {
                <textarea name="content" placeholder="Enter Content" cols="75" rows="5"
                          value={this.state.content} onChange={this.onChange}></textarea>
               </div>
-
               <button
                 type="submit"
                 className="btn btn-lg btn-primary btn-block"
