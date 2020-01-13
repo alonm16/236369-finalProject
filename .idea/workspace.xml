@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="196b0e7e-5890-4b93-8076-ce3d7f8ffffd" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/src/Component/EditPost.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/Component/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Component/Profile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -116,7 +116,9 @@
       <workItem from="1578653145743" duration="1791000" />
       <workItem from="1578656324138" duration="3283000" />
       <workItem from="1578822721581" duration="171000" />
-      <workItem from="1578846159092" duration="18994000" />
+      <workItem from="1578846159092" duration="20498000" />
+      <workItem from="1578901062314" duration="3208000" />
+      <workItem from="1578914823839" duration="4191000" />
     </task>
     <servers />
   </component>
@@ -147,7 +149,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/frontend/src/Component/Navbar.js</url>
           <line>121</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
