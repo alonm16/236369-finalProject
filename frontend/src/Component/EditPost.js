@@ -9,7 +9,7 @@ import Button from "reactstrap/es/Button";
 const update = updatedPost => {
     axios.defaults.withCredentials = true;
   return axios
-    .put('http://127.0.0.1:5000/EditPost/'+updatedPost.id, {
+    .put('http://127.0.0.1:5000/editPost/'+updatedPost.id, {
       title: updatedPost.title,
       startDate: updatedPost.startDate,
       endDate: updatedPost.endDate,
@@ -20,7 +20,7 @@ const update = updatedPost => {
     .then(response => {
         return response.data
     })
-}
+};
 
 
 const validateForm = (errors) => {
@@ -69,7 +69,7 @@ function EditPostFunc(props){
   return(
           <div className="col-md-6 mt-3 mx-auto">
      <form noValidate onSubmit={props.onSubmit}>
-              <h1 className="h3 mb-3 font-weight-normal">Update Profile</h1>
+              <h1 className="h3 mb-3 font-weight-normal">Update Post</h1>
               <div className="form-group">
                   {props.invalid >0 &&  <Alert color="danger">
                   Your update attempt is invalid. Please try again!
@@ -197,9 +197,9 @@ export class EditPost extends Component {
         this.setState({current_user: decoded.identity.id});
     }
 
-        axios.get('http://127.0.0.1:5000/EditPost/' + this.props.id).then((response) => {
+        axios.get('http://127.0.0.1:5000/getPost/' + this.props.match.params.id).then((response) => {
                 this.setState({
-                    title: response.data.title,
+                  title: response.data.title,
                   country: response.data.country,
                   city: response.data.city,
                   content: response.data.content,
@@ -289,15 +289,15 @@ export class EditPost extends Component {
     this.setState({invalid: 0});
     this.setState({user_taken: 0});
     this.setState({email_taken: 0});
-
+    console.log(this.props.match.params.id);
     const updatedUser = {
-      id: this.props.id,
-      username: this.state.username,
-      first_name: this.state.first_name,
-      last_name: this.state.last_name,
-      gender: this.state.gender,
-      birth_date: this.state.birth_date,
-      email: this.state.email,
+      id: this.props.match.params.id,
+      title:this.state.title,
+      startDate:this.state.startDate,
+      endDate:this.state.endDate,
+      country:this.state.country,
+      city:this.state.city,
+      content:this.state.content
     }
       const info={
         email: this.state.email,
@@ -307,25 +307,8 @@ export class EditPost extends Component {
      if (validateForm(this.state.errors)) {
          update(updatedUser).then(res => {
              if (res == 'Updated') {
-                 if (this.state.file){
-                     this.uploadImg()
-                     this.props.updateInfo(info);
-                 }
-                 else
-                     {
-                                                console.log("here5");
-
-                         this.props.updateInfo(info);
-                     }
                this.setState({flag: true, file:null});
-             }
-             if (res == 'Username Taken'){
-                 this.setState({user_taken: 1});
-                 this.setState({invalid: 1});
-             }
-             if (res == 'Email Taken'){
-                 this.setState({email_taken: 1});
-                 this.setState({invalid: 1});
+               this.props.history.push(`/`);
              }
          })
      }
@@ -347,7 +330,7 @@ export class EditPost extends Component {
              content={this.state.content}
             />}
             <p className="m-md-4" align="center">
-                <Button className="my-3" color="secondary" onClick={this.toggleUpdate.bind(this)}>Edit</Button>
+                {this.state.flag &&  <Button className="my-3" color="secondary" onClick={this.toggleUpdate.bind(this)}>Edit</Button>}
             </p>
              {!this.state.flag && <EditPostFunc
               title={this.state.title}
@@ -364,9 +347,6 @@ export class EditPost extends Component {
               toggleUpdate={this.toggleUpdate}
               onchangeimg={this.onChangeImg}
             />}
-            <div className="col-md-6 mt-1 mx-auto">
-            {!this.state.flag && <Button className="btn btn-lg btn-block" color="secondary" onClick={this.toggleUpdate.bind(this)}>Cancel</Button>}
-            </div>
             </div>
       </div>
     )
