@@ -142,6 +142,7 @@ class FindPartners extends Component {
   addMarker = (e) => {
     const lat = e.latlng['lat'];
     const lng = e.latlng['lng'];
+    this.setState({lat:lat, lng:lng});
     axios.defaults.withCredentials = true;
      axios
     .get('http://127.0.0.1:5000/getMarkers', {
@@ -234,13 +235,17 @@ class FindPartners extends Component {
                 <br/> title: {this.state.descriptions[idx]['title']}
                  <br/> user: {this.state.descriptions[idx]['user_name']}
                  <br/> title: {this.state.descriptions[idx]['title']}
-                 <br/> title: {this.state.descriptions[idx]['title']}</span>
+                 <br/> start date: {this.state.descriptions[idx]['startDate'] }
+                 <br/> end date: {this.state.descriptions[idx]['endDate']}</span>
               </Popup>}
             </Marker>
             )}
           </Map>
               </div>
             </form>
+              <p className="text-secondary">
+                  <h5>Latitude: {this.state.lat} &nbsp;&nbsp;&nbsp;&nbsp; Longitude: {this.state.lng}</h5>
+                  </p>
           </div>
         </div>
       </div>

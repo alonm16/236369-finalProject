@@ -206,14 +206,15 @@ def get_markers():
     start_date = request.args.get('start')
     end_date = request.args.get('end')
     for cur_post in Posts.query.all():
+        if current_user.id == cur_post.user_id:
+            continue
         cur_user = User.query.get_or_404(cur_post.user_id)
-        if True or current_user.is_following(cur_user) or (cur_post.is_in_radius(lat, lng, radius) and
-                                                   date_between(start_date, end_date, cur_post.start_date, cur_post.end_date)):
+        if current_user.is_following(cur_user) or (cur_post.is_in_radius(lat, lng, radius) and
+                                                   date_between( cur_post.start_date, cur_post.end_date,start_date, end_date)):
             markers.append({'lat': cur_post.latitude, 'lng': cur_post.longitude})
             descriptions.append({'title': cur_post.title, 'user_name': cur_user.username,
                                            'endDate': cur_post.end_date, 'startDate': cur_post.start_date,
                                            'is_following': current_user.is_following(cur_user)})
-    print(markers)
     return jsonify({'markers': markers,  'descriptions': descriptions})
 
 
