@@ -54,6 +54,17 @@ def get_user(user_id):
                     'followed': len(user.followed.all())})
 
 
+@app.route("/image/<int:user_id>", methods=['PUT'])
+def update_img(user_id):
+    user = User.query.get_or_404(user_id)
+    img_data = request.files['file']
+    user.image_file = save_picture(img_data)
+    db.session.add(user)
+    db.session.commit()
+    return jsonify({"image_file": url_for('static', filename='profile_pics/' + user.image_file)})
+
+
+
 @app.route("/user/<string:name>", methods=['GET'])
 def get_user_id(name):
     user = User.query.filter_by(username=name).first()
