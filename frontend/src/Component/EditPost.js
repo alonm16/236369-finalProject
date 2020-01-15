@@ -189,7 +189,7 @@ export class EditPost extends Component {
   render() {
     return (
       <div className="container">
-          <div className="col-md-6 mt-3 mx-auto">
+          <div className="col-md-6 mt-3 mx-auto" style={{paddingBottom:'20px'}}>
      <form noValidate onSubmit={this.onSubmit}>
               <h1 className="h3 mb-3 font-weight-normal">Update Post</h1>
               <div className="form-group">
