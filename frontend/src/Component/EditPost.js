@@ -5,22 +5,26 @@ import axios from "axios";
 import Alert from "reactstrap/es/Alert";
 import DatePicker from "react-datepicker";
 import Button from "reactstrap/es/Button";
+import {Map, Marker, Popup, TileLayer} from "react-leaflet";
+import ReactLeafletSearch from "react-leaflet-search";
 
 const update = updatedPost => {
     axios.defaults.withCredentials = true;
   return axios
-    .put('http://127.0.0.1:5000/EditPost/'+updatedPost.id, {
+    .put('http://127.0.0.1:5000/editPost/'+updatedPost.id, {
       title: updatedPost.title,
       startDate: updatedPost.startDate,
       endDate: updatedPost.endDate,
       country: updatedPost.country,
       city: updatedPost.city,
       content: updatedPost.content,
+      latitude: updatedPost.latitude,
+      longitude: updatedPost.longitude
     })
     .then(response => {
         return response.data
     })
-}
+};
 
 
 const validateForm = (errors) => {
@@ -30,138 +34,6 @@ const validateForm = (errors) => {
   );
   return valid;
 }
-
-function PostInfo(props){
-  return (
-     <table className="table col-md-6 mx-auto">
-            <tbody>
-              <tr>
-                <td><b>Title</b></td>
-                <td>{props.title}</td>
-              </tr>
-              <tr>
-                  <td><b>Country</b></td>
-                <td>{props.country}</td>
-              </tr>
-              <tr>
-                  <td><b>City</b></td>
-                <td>{props.city}</td>
-              </tr>
-              <tr>
-                  <td><b>Content</b></td>
-                <td>{props.content}</td>
-              </tr>
-              <tr>
-                  <td><b>Start Date</b></td>
-                <td>{moment(props.startDate).format("LL")}</td>
-              </tr>
-               <tr>
-                  <td><b>End Date</b></td>
-                <td>{moment(props.endDate).format("LL")}</td>
-              </tr>
-            </tbody>
-          </table>
-  );
-}
-
-
-function EditPostFunc(props){
-  return(
-          <div className="col-md-6 mt-3 mx-auto">
-     <form noValidate onSubmit={props.onSubmit}>
-              <h1 className="h3 mb-3 font-weight-normal">Update Profile</h1>
-              <div className="form-group">
-                  {props.invalid >0 &&  <Alert color="danger">
-                  Your update attempt is invalid. Please try again!
-                </Alert> }
-                <label htmlFor="name">Title</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="title"
-                  placeholder="Enter your title"
-                  value={props.title}
-                  onChange={props.onChange}
-                  noValidate
-                />
-                 {props.errors.title.length > 0 &&
-                <span className='error'>{props.errors.title}</span>}
-              </div>
-              <div className="form-group">
-                <label htmlFor="name">Country</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="country"
-                  placeholder="Enter a Country"
-                  value={props.country}
-                  onChange={props.onChange}
-                  noValidate
-                />
-                {props.errors.country.length > 0 &&
-                <span className='error'>{props.errors.country}</span>}
-              </div>
-              <div className="form-group">
-                <label htmlFor="name">City</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="city"
-                  placeholder="Enter a City"
-                  value={props.city}
-                  onChange={props.onChange}
-                  noValidate
-                />
-                 {props.errors.city.length > 0 &&
-                <span className='error'>{props.city}</span>}
-              </div>
-              <div className="form-group">
-                <label htmlFor="name">Content</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="content"
-                  placeholder="Enter a Content"
-                  value={props.content}
-                  onChange={props.onChange}
-                  noValidate
-                />
-                 {props.errors.content.length > 0 &&
-                <span className='error'>{props.content}</span>}
-              </div>
-              <div className="form-group">
-                  <label htmlFor="name">Start date</label><br></br>
-                <DatePicker
-                 name="startDate"
-                 selected={new Date(props.startDate)}
-                 onChange={props.handleChangeStart}
-                 dateFormat="dd/MM/yyyy"
-                 maxDate={new Date()}
-                />
-              </div>
-              <div className="form-group">
-                  <label htmlFor="name">End date</label><br></br>
-                <DatePicker
-                 name="endDate"
-                 selected={new Date(props.endDate)}
-                 onChange={props.handleChangeEnd}
-                 dateFormat="dd/MM/yyyy"
-                 maxDate={new Date()}
-                />
-              </div>
-              <button
-                type="submit"
-                className="btn btn-lg btn-primary btn-block"
-              >
-                Update
-              </button>
-            </form>
-
-          </div>
-  );
-}
-
-
 
 export class EditPost extends Component {
   constructor() {
@@ -173,10 +45,14 @@ export class EditPost extends Component {
       country: '',
       city: '',
       content: '',
+      zoom: 13,
+      markers: [],
+      center: [51.505, -0.09],
       errors: {
           title: '',
           country: '',
           content: '',
+          city: ''
       },
       invalid: 0,
       flag: true,
@@ -197,35 +73,22 @@ export class EditPost extends Component {
         this.setState({current_user: decoded.identity.id});
     }
 
-        axios.get('http://127.0.0.1:5000/EditPost/' + this.props.id).then((response) => {
+        axios.get('http://127.0.0.1:5000/getPost/' + this.props.match.params.id).then((response) => {
                 this.setState({
-                    title: response.data.title,
+                  title: response.data.title,
                   country: response.data.country,
                   city: response.data.city,
                   content: response.data.content,
                   startDate: response.data.startDate,
-                  endDate: response.data.endDate
-                })
+                  endDate: response.data.endDate,
+                  markers: [{'lat':response.data.latitude, 'lng': response.data.longitude}],
+                  center: [response.data.latitude, response.data.longitude]
+                });
             }).catch(err => {
                 console.log(err)
             });
   }
 
-  toggleUpdate(){
-    this.setState({
-      flag: !this.state.flag,
-      errors: {
-          title: '',
-          content: '',
-          city: '',
-          country: '',
-      },
-      invalid: 0,
-      file:null
-    });
-    if (!this.state.flag)
-      this.componentDidMount();
-  }
   handleChangeStart = date => {
     this.setState({
       startDate: date
@@ -287,45 +150,28 @@ export class EditPost extends Component {
   onSubmit(e) {
     e.preventDefault()
     this.setState({invalid: 0});
-    this.setState({user_taken: 0});
-    this.setState({email_taken: 0});
-
+    if(this.state.markers.length==0)
+        {
+             this.setState({invalid: 1});
+             return;
+        }
     const updatedUser = {
-      id: this.props.id,
-      username: this.state.username,
-      first_name: this.state.first_name,
-      last_name: this.state.last_name,
-      gender: this.state.gender,
-      birth_date: this.state.birth_date,
-      email: this.state.email,
-    }
-      const info={
-        email: this.state.email,
-          username: this.state.username
+      id: this.props.match.params.id,
+      title:this.state.title,
+      startDate:this.state.startDate,
+      endDate:this.state.endDate,
+      country:this.state.country,
+      city:this.state.city,
+      content:this.state.content,
+      latitude: this.state.markers[0]['lat'] ,
+      longitude: this.state.markers[0]['lng']
     }
 
      if (validateForm(this.state.errors)) {
          update(updatedUser).then(res => {
              if (res == 'Updated') {
-                 if (this.state.file){
-                     this.uploadImg()
-                     this.props.updateInfo(info);
-                 }
-                 else
-                     {
-                                                console.log("here5");
-
-                         this.props.updateInfo(info);
-                     }
                this.setState({flag: true, file:null});
-             }
-             if (res == 'Username Taken'){
-                 this.setState({user_taken: 1});
-                 this.setState({invalid: 1});
-             }
-             if (res == 'Email Taken'){
-                 this.setState({email_taken: 1});
-                 this.setState({invalid: 1});
+               this.props.history.push(`/`);
              }
          })
      }
@@ -334,40 +180,137 @@ export class EditPost extends Component {
      }
   }
 
+    addMarker = (e) => {
+    const markers = [];
+    markers.push(e.latlng);
+    this.setState({markers})
+  };
+
   render() {
     return (
       <div className="container">
-        <div className="jumbotron mt-1">
-          {this.state.flag && <PostInfo
-             title={this.state.title}
-             startDate={this.state.startDate}
-             endDate={this.state.endDate}
-             country={this.state.country}
-             city={this.state.city}
-             content={this.state.content}
-            />}
-            <p className="m-md-4" align="center">
-                <Button className="my-3" color="secondary" onClick={this.toggleUpdate.bind(this)}>Edit</Button>
-            </p>
-             {!this.state.flag && <EditPostFunc
-              title={this.state.title}
-              startDate={this.state.startDate}
-              endDate={this.state.endDate}
-              country={this.state.country}
-              city={this.state.city}
-              content={this.state.content}
-              errors={this.state.errors}
-              onChange={this.onChange}
-              onSubmit={this.onSubmit}
-              invalid={this.state.invalid}
-              flag={this.state.flag}
-              toggleUpdate={this.toggleUpdate}
-              onchangeimg={this.onChangeImg}
-            />}
-            <div className="col-md-6 mt-1 mx-auto">
-            {!this.state.flag && <Button className="btn btn-lg btn-block" color="secondary" onClick={this.toggleUpdate.bind(this)}>Cancel</Button>}
-            </div>
-            </div>
+          <div className="col-md-6 mt-3 mx-auto" style={{paddingBottom:'20px'}}>
+     <form noValidate onSubmit={this.onSubmit}>
+              <h1 className="h3 mb-3 font-weight-normal">Update Post</h1>
+              <div className="form-group">
+                  {this.state.invalid >0 &&  <Alert color="danger">
+                  Your update attempt is invalid. Please try again!
+                </Alert> }
+
+             <Map
+            center={this.state.center}
+            onClick={this.addMarker}
+            zoom={13}
+            >
+                 <ReactLeafletSearch  position="topleft"
+                    inputPlaceholder="Enter a place"
+                    search={[]} // Setting this to [lat, lng] gives initial search input to the component and map flies to that coordinates, its like search from props not from user
+                    zoom={12} // Default value is 10
+                    showMarker={false}
+                    showPopup={true}
+                    openSearchOnLoad={false} // By default there's a search icon which opens the input when clicked. Setting this to true opens the search by default.
+                    closeResultsOnClick={true} // By default, the search results remain when you click on one, and the map flies to the location of the result. But you might want to save space on your map by closing the results when one is clicked. The results are shown again (without another search) when focus is returned to the search input.
+                    providerOptions={{searchBounds: []}} // The BingMap and OpenStreetMap providers both accept bounding coordinates in [se,nw] format. Note that in the case of OpenStreetMap, this only weights the results and doesn't exclude things out of bounds.
+                    customProvider={undefined | {search: (searchString)=> {}}}  />
+
+            <TileLayer
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+            />
+                 {console.log(this.state.markers)}
+            {this.state.markers.map((position, idx) =>
+              <Marker key={`marker-${idx}`} position={position}>
+              <Popup>
+                <span>latitude: {this.state.markers[0]['lat']} <br/> longitude: {this.state.markers[0]['lng']}</span>
+              </Popup>
+            </Marker>
+            )}
+          </Map>
+                <label htmlFor="name">Title</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="title"
+                  placeholder="Enter your title"
+                  value={this.state.title}
+                  onChange={this.onChange}
+                  noValidate
+                />
+                 {this.state.errors.title.length > 0 &&
+                <span className='error'>{this.state.errors.title}</span>}
+              </div>
+              <div className="form-group">
+                <label htmlFor="name">Country</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="country"
+                  placeholder="Enter a Country"
+                  value={this.state.country}
+                  onChange={this.onChange}
+                  noValidate
+                />
+                {this.state.errors.country.length > 0 &&
+                <span className='error'>{this.state.errors.country}</span>}
+              </div>
+              <div className="form-group">
+                <label htmlFor="name">City</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="city"
+                  placeholder="Enter a City"
+                  value={this.state.city}
+                  onChange={this.onChange}
+                  noValidate
+                />
+                 {this.state.errors.city.length > 0 &&
+                <span className='error'>{this.state.city}</span>}
+              </div>
+              <div className="form-group">
+                <label htmlFor="name">Content</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="content"
+                  placeholder="Enter a Content"
+                  value={this.state.content}
+                  onChange={this.onChange}
+                  noValidate
+                />
+                 {this.state.errors.content.length > 0 &&
+                <span className='error'>{this.state.content}</span>}
+              </div>
+              <div className="form-group">
+                  <label htmlFor="name">Start date</label><br></br>
+                <DatePicker
+                 name="startDate"
+                 selected={new Date(this.state.startDate)}
+                 onChange={this.handleChangeStart}
+                 dateFormat="dd/MM/yyyy"
+                 minDate = {new Date()}
+
+                />
+              </div>
+              <div className="form-group">
+                  <label htmlFor="name">End date</label><br></br>
+                <DatePicker
+                 name="endDate"
+                 selected={new Date(this.state.endDate)}
+                 onChange={this.handleChangeEnd}
+                 dateFormat="dd/MM/yyyy"
+                 minDate = {new Date()}
+                />
+              </div>
+              <button
+                type="submit"
+                className="btn btn-lg btn-primary btn-block"
+              >
+                Update
+              </button>
+            </form>
+
+          </div>
       </div>
     )
   }

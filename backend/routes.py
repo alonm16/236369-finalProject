@@ -168,7 +168,6 @@ def follow(user_id):
 
 
 @app.route("/addPost", methods=['POST'])
-@login_required
 def addPost():
     print('what')
     data = request.get_json()
@@ -218,6 +217,33 @@ def deleteAccount(user_id):
     db.session.delete(user)
     db.session.commit()
     return 'True'
+
+
+@app.route("/getPost/<int:post_id>", methods=['GET'])
+def get_post(post_id):
+    post = Posts.query.get_or_404(post_id)
+    print(post)
+    return jsonify({'title': post.title, 'country': post.country, 'city': post.city, 'content': post.content,
+                    'startDate': post.start_date, 'endDate': post.end_date, 'latitude': post.latitude,
+                    'longitude': post.longitude})
+
+
+@app.route("/editPost/<int:post_id>", methods=['PUT'])
+def update_post(post_id):
+    post = Posts.query.get_or_404(post_id)
+    post_update = request.get_json()
+    print(post_update['latitude'])
+    post.title = post_update['title']
+    post.content = post_update['content']
+    post.country = post_update['country']
+    post.city = post_update['city']
+    post.start_date = post_update['startDate']
+    post.end_date = post_update['endDate']
+    post.latitude = post_update['latitude']
+    post.longitude = post_update['longitude']
+    db.session.add(post)
+    db.session.commit()
+    return 'Updated'
 
 
 def date_between(start_date, end_date, start_date_arg, end_date_arg):
