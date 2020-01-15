@@ -216,7 +216,7 @@ export class Profile extends Component{
                     updatePic={this.updateMenuPic.bind(this)} /> :null}
                 {this.state.followersFlag  ? <Users id ={this.props.match.params.id} type={1} flag={this.state.isFollowing}/> : null}
                 {this.state.followingFlag  ? <Users id ={this.props.match.params.id} type={2} flag={this.state.isFollowing}/> : null}
-                {this.state.postsFlag  ? <Landing/> : null}
+                {this.state.postsFlag  ? <Landing type ={1} id ={this.props.match.params.id}/> : null}
                     <div className="text-center">
                     {(this.state.current_user == this.props.match.params.id) && <Button
                               onClick={this.deleteAccount.bind(this)}

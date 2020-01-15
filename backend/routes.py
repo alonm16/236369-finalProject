@@ -239,6 +239,19 @@ def get_posts():
     return jsonify(all_posts)
 
 
+@app.route("/my_posts/<int:user_id>", methods=['GET'])
+def get_my_posts(user_id):
+    all_posts = []
+    traveler = User.query.get_or_404(user_id)
+    for post in Posts.query.filter_by(traveler=traveler).all():
+        image_file = url_for('static', filename='profile_pics/' + post.traveler.image_file)
+        all_posts.append({'id': post.id, 'title': post.title, 'date_posted': post.date_posted, 'user_id': post.user_id,
+                            'user_name': post.traveler.username, 'user_image': image_file,
+                          'start_date': post.start_date, 'end_date': post.end_date, 'country': post.country,
+                          'city': post.city, 'latitude': post.latitude, 'longitude': post.longitude, 'content': post.content})
+    return jsonify(all_posts)
+
+
 @app.route("/deleteAccount/<int:user_id>", methods=['DELETE'])
 def deleteAccount(user_id):
     user = User.query.get_or_404(user_id)
