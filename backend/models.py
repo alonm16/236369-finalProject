@@ -79,6 +79,23 @@ class User(db.Model, UserMixin):
         return self.followers.filter_by(
             follower_id=user.id).first() is not None
 
+    def subscribe(self, post):
+        if not self.is_subscribed(post):
+            f = Subscribe(subscriber=self, post=post)
+            db.session.add(f)
+
+    def unsubscribe(self, post):
+        f = self.subscribes.filter_by(post_id=post.id).first()
+        if f:
+            db.session.delete(f)
+
+    def is_subscribed(self, post):
+        if post.id is None:
+            return False
+
+        return self.subscribes.filter_by(
+            post_id=post.id).first() is not None
+
 
 class Posts(db.Model):
     id = db.Column(db.Integer, primary_key=True)

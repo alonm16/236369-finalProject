@@ -204,23 +204,19 @@ def deletePost(post_id):
 def get_posts():
     all_posts = []
     for post in Posts.query.all():
+        image_file = url_for('static', filename='profile_pics/' + post.traveler.image_file)
         all_posts.append({'id': post.id, 'title': post.title, 'date_posted': post.date_posted, 'user_id': post.user_id,
+                            'user_name': post.traveler.username, 'user_image': image_file,
                           'start_date': post.start_date, 'end_date': post.end_date, 'country': post.country,
-                          'city': post.city, 'latitude': post.latitude, 'content': post.content})
+                          'city': post.city, 'latitude': post.latitude, 'longitude': post.longitude, 'content': post.content})
     return jsonify(all_posts)
 
 
 @app.route("/deleteAccount/<int:user_id>", methods=['DELETE'])
 def deleteAccount(user_id):
-    print('hello')
     user = User.query.get_or_404(user_id)
-    print(user_id)
-    print(user.id)
-    print('hi')
     db.session.delete(user)
-    print('bye')
     db.session.commit()
-    print('see u')
     return 'True'
 
 
@@ -232,3 +228,25 @@ def date_between(start_date, end_date, start_date_arg, end_date_arg):
         return end_date.date() >= start_date_arg_converted
     return False
 
+
+@app.route('/subscribe/<int:post_id>', methods=['POST', 'DELETE'])
+@login_required
+def subscribe(post_id):
+    post = Posts.query.get_or_404(post_id)
+    if not current_user.is_subscribed(post):
+        current_user.subscribe(post)
+    else:
+        current_user.unsubscribe(post)
+
+    db.session.commit()
+    return 'True'
+
+
+@app.route('/is_subscribed/<int:post_id>', methods=['GET'])
+@login_required
+def is_subscribed(post_id):
+    print('hi',post_id)
+    post = Posts.query.get_or_404(post_id)
+    if current_user.is_subscribed(post):
+        return 'True'
+    return 'False'
