@@ -22,7 +22,7 @@ export class Users extends Component{
     refresh_users(page){
         if (this.props.type == 1) {
             axios.defaults.withCredentials = true;
-            axios.get('http://127.0.0.1:5000/followers/' + this.props.id + "?page=" + page).then((response) => {
+            axios.get('http://127.0.0.1:5000/followers/' + this.props.id ).then((response) => {
                 this.setState({
                     users: response.data.followers,
                     amount: response.data.length
@@ -33,7 +33,7 @@ export class Users extends Component{
         }
         else{
              axios.defaults.withCredentials = true;
-            axios.get('http://127.0.0.1:5000/following/' + this.props.id + "?page=" + page).then((response) => {
+            axios.get('http://127.0.0.1:5000/following/' + this.props.id).then((response) => {
                 this.setState({
                     users: response.data.following,
                     amount: response.data.length

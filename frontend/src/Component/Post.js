@@ -31,6 +31,8 @@ class Post extends Component {
       date_posted: "",
       user_id: "",
       user_name: "",
+      user_first: "",
+      user_last: "",
       user_image: "",
       start_date: "",
       end_date: "",
@@ -91,6 +93,19 @@ class Post extends Component {
         .catch(err => {
           console.log(err);
         });
+
+       axios
+        .get("http://127.0.0.1:5000/userDetails/" + this.props.user_name)
+        .then(response => {
+          this.setState({
+            user_first: response.data.first,
+            user_last: response.data.last
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+
     }
   }
 
@@ -107,13 +122,17 @@ class Post extends Component {
                 height="40"
                 width="40"
               />
-              <b>&nbsp;&nbsp;&nbsp;{this.props.user_name}</b>
+
+              <b>&nbsp;&nbsp;&nbsp;{this.state.user_first}</b>
+              <b>&nbsp;{this.state.user_last}</b>
             </p>
             <p style={{ float: "right" }}>
               {" "}
-              <ReactTimeAgo date={this.props.start_date} />
+              <ReactTimeAgo date={this.props.date_posted} />
             </p>
           </div>
+
+
         </CardHeader>
 
         <CardBody>
@@ -133,6 +152,7 @@ class Post extends Component {
           >
             {this.state.isSubscribed ? "Unsubscribe" : "Subscribe"}
           </Button>
+
         )}
       </Card>
     );
