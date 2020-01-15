@@ -62,6 +62,13 @@ def get_user_id(name):
     return jsonify({'id': user.id})
 
 
+@app.route("/userDetails/<string:name>", methods=['GET'])
+def get_user_details(name):
+    user = User.query.filter_by(username=name).first()
+    if not user:
+        abort(404)
+    return jsonify({'first': user.first_name, 'last': user.last_name})
+
 @app.route("/user/new", methods=['POST'])
 def register():
     if current_user.is_authenticated:
@@ -154,6 +161,28 @@ def is_following_me(user_id):
     return 'False'
 
 
+@app.route('/followers/<int:user_id>', methods=['GET'])
+@login_required
+def following_me(user_id):
+    followers = []
+    for cur_follow in Follow.query.filter_by(followed_id=user_id).all():
+        image_file = url_for('static', filename='profile_pics/' + cur_follow.follower.image_file)
+        cur_follower = cur_follow.follower
+        followers.append({'image_file': image_file, 'id': cur_follower.id, 'username': cur_follower.username})
+    return jsonify({'followers': followers})
+
+
+@app.route('/following/<int:user_id>', methods=['GET'])
+@login_required
+def followed_by_me(user_id):
+    followed = []
+    for cur_follow in Follow.query.filter_by(follower_id=user_id).all():
+        image_file = url_for('static', filename='profile_pics/' + cur_follow.followed.image_file)
+        cur_followed = cur_follow.followed
+        followed.append({'image_file': image_file, 'id': cur_followed.id, 'username': cur_followed.username})
+    return jsonify({'following': followed})
+
+
 @app.route('/follow/<int:user_id>', methods=['POST', 'DELETE'])
 @login_required
 def follow(user_id):
@@ -169,7 +198,6 @@ def follow(user_id):
 
 @app.route("/addPost", methods=['POST'])
 def addPost():
-    print('what')
     data = request.get_json()
     print(data)
     if not data or not 'title' in data or not 'content' in data:
@@ -222,7 +250,6 @@ def deleteAccount(user_id):
 @app.route("/getPost/<int:post_id>", methods=['GET'])
 def get_post(post_id):
     post = Posts.query.get_or_404(post_id)
-    print(post)
     return jsonify({'title': post.title, 'country': post.country, 'city': post.city, 'content': post.content,
                     'startDate': post.start_date, 'endDate': post.end_date, 'latitude': post.latitude,
                     'longitude': post.longitude})

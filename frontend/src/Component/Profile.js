@@ -187,6 +187,21 @@ export class Profile extends Component{
                                 About Me
                             </NavLink>
                           </NavItem>
+                        <NavItem>
+                            <NavLink
+                                href="#"
+                                onClick= {this.showFollowers.bind(this)}>
+                                Followers
+                            </NavLink>
+                          </NavItem>
+                         <NavItem>
+                            <NavLink
+                                href="#"
+                                onClick= {this.showFollowing.bind(this)}>
+                                Following
+                            </NavLink>
+                          </NavItem>
+
                         </Nav>
 
             {this.state.aboutFlag ? <About id ={this.props.match.params.id} updateInfo={this.updateMenuInfo.bind(this)}
