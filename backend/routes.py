@@ -230,12 +230,15 @@ def get_post(post_id):
 def update_post(post_id):
     post = Posts.query.get_or_404(post_id)
     post_update = request.get_json()
+    print(post_update['latitude'])
     post.title = post_update['title']
     post.content = post_update['content']
     post.country = post_update['country']
     post.city = post_update['city']
     post.start_date = post_update['startDate']
     post.end_date = post_update['endDate']
+    post.latitude = post_update['latitude']
+    post.longitude = post_update['longitude']
     db.session.add(post)
     db.session.commit()
     return 'Updated'

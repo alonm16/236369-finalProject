@@ -117,7 +117,6 @@ class AddPost extends Component {
              this.setState({invalid: 1});
              return;
         }
-     console.log(this.state.markers);
      const newPost = {
       title: this.state.title,
       startDate: this.state.startDate,
@@ -157,7 +156,7 @@ class AddPost extends Component {
             <form noValidate onSubmit={this.onSubmit}>
               <h1 className="h3 mb-3 font-weight-normal">Add Post</h1>
               <div className="form-group">
-                    {this.state.invalid >0 &&  <Alert color="danger">
+                    {this.state.invalid >0 &&  this.state.markers.length==0 && <Alert color="danger">
                   Please choose a location on map
                 </Alert> }
              <Map
@@ -182,9 +181,9 @@ class AddPost extends Component {
             />
             {this.state.markers.map((position, idx) =>
               <Marker key={`marker-${idx}`} position={position}>
-              <Popup>
-                <span>A pretty CSS3 popup. <br/> Easily customizable.</span>
-              </Popup>
+                  {this.state.markers.length>0 && <Popup>
+                <span>latitude: {this.state.markers[0]['lat']} <br/> longitude: {this.state.markers[0]['lng']}</span>
+              </Popup>}
             </Marker>
             )}
           </Map>

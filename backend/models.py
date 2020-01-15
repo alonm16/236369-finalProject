@@ -89,8 +89,8 @@ class Posts(db.Model):
     end_date = db.Column(db.DateTime, nullable=False)
     country = db.Column(db.Text, nullable=False)
     city = db.Column(db.Text, nullable=False)
-    latitude = db.Column(db.Integer, nullable=False)
-    longitude = db.Column(db.Integer, nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
     content = db.Column(db.Text, nullable=False)
     subscribers = db.relationship('Subscribe', foreign_keys=[Subscribe.post_id], backref=db.backref('post', lazy='joined'),
                                lazy='dynamic', cascade='all, delete-orphan')
