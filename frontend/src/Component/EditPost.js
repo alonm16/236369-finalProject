@@ -31,138 +31,6 @@ const validateForm = (errors) => {
   return valid;
 }
 
-function PostInfo(props){
-  return (
-     <table className="table col-md-6 mx-auto">
-            <tbody>
-              <tr>
-                <td><b>Title</b></td>
-                <td>{props.title}</td>
-              </tr>
-              <tr>
-                  <td><b>Country</b></td>
-                <td>{props.country}</td>
-              </tr>
-              <tr>
-                  <td><b>City</b></td>
-                <td>{props.city}</td>
-              </tr>
-              <tr>
-                  <td><b>Content</b></td>
-                <td>{props.content}</td>
-              </tr>
-              <tr>
-                  <td><b>Start Date</b></td>
-                <td>{moment(props.startDate).format("LL")}</td>
-              </tr>
-               <tr>
-                  <td><b>End Date</b></td>
-                <td>{moment(props.endDate).format("LL")}</td>
-              </tr>
-            </tbody>
-          </table>
-  );
-}
-
-
-function EditPostFunc(props){
-  return(
-          <div className="col-md-6 mt-3 mx-auto">
-     <form noValidate onSubmit={props.onSubmit}>
-              <h1 className="h3 mb-3 font-weight-normal">Update Post</h1>
-              <div className="form-group">
-                  {props.invalid >0 &&  <Alert color="danger">
-                  Your update attempt is invalid. Please try again!
-                </Alert> }
-                <label htmlFor="name">Title</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="title"
-                  placeholder="Enter your title"
-                  value={props.title}
-                  onChange={props.onChange}
-                  noValidate
-                />
-                 {props.errors.title.length > 0 &&
-                <span className='error'>{props.errors.title}</span>}
-              </div>
-              <div className="form-group">
-                <label htmlFor="name">Country</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="country"
-                  placeholder="Enter a Country"
-                  value={props.country}
-                  onChange={props.onChange}
-                  noValidate
-                />
-                {props.errors.country.length > 0 &&
-                <span className='error'>{props.errors.country}</span>}
-              </div>
-              <div className="form-group">
-                <label htmlFor="name">City</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="city"
-                  placeholder="Enter a City"
-                  value={props.city}
-                  onChange={props.onChange}
-                  noValidate
-                />
-                 {props.errors.city.length > 0 &&
-                <span className='error'>{props.city}</span>}
-              </div>
-              <div className="form-group">
-                <label htmlFor="name">Content</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="content"
-                  placeholder="Enter a Content"
-                  value={props.content}
-                  onChange={props.onChange}
-                  noValidate
-                />
-                 {props.errors.content.length > 0 &&
-                <span className='error'>{props.content}</span>}
-              </div>
-              <div className="form-group">
-                  <label htmlFor="name">Start date</label><br></br>
-                <DatePicker
-                 name="startDate"
-                 selected={new Date(props.startDate)}
-                 onChange={props.handleChangeStart}
-                 dateFormat="dd/MM/yyyy"
-                 maxDate={new Date()}
-                />
-              </div>
-              <div className="form-group">
-                  <label htmlFor="name">End date</label><br></br>
-                <DatePicker
-                 name="endDate"
-                 selected={new Date(props.endDate)}
-                 onChange={props.handleChangeEnd}
-                 dateFormat="dd/MM/yyyy"
-                 maxDate={new Date()}
-                />
-              </div>
-              <button
-                type="submit"
-                className="btn btn-lg btn-primary btn-block"
-              >
-                Update
-              </button>
-            </form>
-
-          </div>
-  );
-}
-
-
-
 export class EditPost extends Component {
   constructor() {
     super()
@@ -177,6 +45,7 @@ export class EditPost extends Component {
           title: '',
           country: '',
           content: '',
+          city: ''
       },
       invalid: 0,
       flag: true,
@@ -320,34 +189,98 @@ export class EditPost extends Component {
   render() {
     return (
       <div className="container">
-        <div className="jumbotron mt-1">
-          {this.state.flag && <PostInfo
-             title={this.state.title}
-             startDate={this.state.startDate}
-             endDate={this.state.endDate}
-             country={this.state.country}
-             city={this.state.city}
-             content={this.state.content}
-            />}
-            <p className="m-md-4" align="center">
-                {this.state.flag &&  <Button className="my-3" color="secondary" onClick={this.toggleUpdate.bind(this)}>Edit</Button>}
-            </p>
-             {!this.state.flag && <EditPostFunc
-              title={this.state.title}
-              startDate={this.state.startDate}
-              endDate={this.state.endDate}
-              country={this.state.country}
-              city={this.state.city}
-              content={this.state.content}
-              errors={this.state.errors}
-              onChange={this.onChange}
-              onSubmit={this.onSubmit}
-              invalid={this.state.invalid}
-              flag={this.state.flag}
-              toggleUpdate={this.toggleUpdate}
-              onchangeimg={this.onChangeImg}
-            />}
-            </div>
+          <div className="col-md-6 mt-3 mx-auto">
+     <form noValidate onSubmit={this.onSubmit}>
+              <h1 className="h3 mb-3 font-weight-normal">Update Post</h1>
+              <div className="form-group">
+                  {this.state.invalid >0 &&  <Alert color="danger">
+                  Your update attempt is invalid. Please try again!
+                </Alert> }
+                <label htmlFor="name">Title</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="title"
+                  placeholder="Enter your title"
+                  value={this.state.title}
+                  onChange={this.onChange}
+                  noValidate
+                />
+                 {this.state.errors.title.length > 0 &&
+                <span className='error'>{this.state.errors.title}</span>}
+              </div>
+              <div className="form-group">
+                <label htmlFor="name">Country</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="country"
+                  placeholder="Enter a Country"
+                  value={this.state.country}
+                  onChange={this.onChange}
+                  noValidate
+                />
+                {this.state.errors.country.length > 0 &&
+                <span className='error'>{this.state.errors.country}</span>}
+              </div>
+              <div className="form-group">
+                <label htmlFor="name">City</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="city"
+                  placeholder="Enter a City"
+                  value={this.state.city}
+                  onChange={this.onChange}
+                  noValidate
+                />
+                 {this.state.errors.city.length > 0 &&
+                <span className='error'>{this.state.city}</span>}
+              </div>
+              <div className="form-group">
+                <label htmlFor="name">Content</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="content"
+                  placeholder="Enter a Content"
+                  value={this.state.content}
+                  onChange={this.onChange}
+                  noValidate
+                />
+                 {this.state.errors.content.length > 0 &&
+                <span className='error'>{this.state.content}</span>}
+              </div>
+              <div className="form-group">
+                  <label htmlFor="name">Start date</label><br></br>
+                <DatePicker
+                 name="startDate"
+                 selected={new Date(this.state.startDate)}
+                 onChange={this.handleChangeStart}
+                 dateFormat="dd/MM/yyyy"
+                 minDate = {new Date()}
+
+                />
+              </div>
+              <div className="form-group">
+                  <label htmlFor="name">End date</label><br></br>
+                <DatePicker
+                 name="endDate"
+                 selected={new Date(this.state.endDate)}
+                 onChange={this.handleChangeEnd}
+                 dateFormat="dd/MM/yyyy"
+                 minDate = {new Date()}
+                />
+              </div>
+              <button
+                type="submit"
+                className="btn btn-lg btn-primary btn-block"
+              >
+                Update
+              </button>
+            </form>
+
+          </div>
       </div>
     )
   }
