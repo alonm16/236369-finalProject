@@ -66,7 +66,7 @@ class Landing extends Component {
                 end_date={listitem.end_date}
                 country={listitem.country}
                 city={listitem.city}
-                latitue={listitem.latitue}
+                latitude={listitem.latitude}
                 longitude={listitem.longitude}
                 content={listitem.content}
                 current_user={this.state.current_user}

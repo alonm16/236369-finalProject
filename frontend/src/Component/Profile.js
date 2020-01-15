@@ -8,6 +8,7 @@ import {Users} from "./Users";
 import Button from "react-bootstrap/Button";
 import jwt_decode from "jwt-decode";
 import Badge from "react-bootstrap/Badge";
+import Landing from "./Landing";
 
 export class Profile extends Component{
     state={
@@ -201,13 +202,21 @@ export class Profile extends Component{
                                 Following
                             </NavLink>
                           </NavItem>
+                         <NavItem>
+                            <NavLink
+                                href="#"
+                                onClick= {this.showPosts.bind(this)}>
+                                Posts
+                            </NavLink>
+                          </NavItem>
 
                         </Nav>
 
             {this.state.aboutFlag ? <About id ={this.props.match.params.id} updateInfo={this.updateMenuInfo.bind(this)}
-                    updatePic={this.updateMenuPic.bind(this)} /> : <br/>}
+                    updatePic={this.updateMenuPic.bind(this)} /> :null}
                 {this.state.followersFlag  ? <Users id ={this.props.match.params.id} type={1} flag={this.state.isFollowing}/> : null}
                 {this.state.followingFlag  ? <Users id ={this.props.match.params.id} type={2} flag={this.state.isFollowing}/> : null}
+                {this.state.postsFlag  ? <Landing/> : null}
                     <div className="text-center">
                     {(this.state.current_user == this.props.match.params.id) && <Button
                               onClick={this.deleteAccount.bind(this)}
