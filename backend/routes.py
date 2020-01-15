@@ -8,6 +8,7 @@ from backend.models import User, Posts, Follow, Subscribe, Notification
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_jwt_extended import (create_access_token)
 import datetime
+from sqlalchemy import desc
 
 
 @login_manager.user_loader
@@ -202,12 +203,17 @@ def deletePost(post_id):
 @app.route("/posts", methods=['GET'])
 def get_posts():
     all_posts = []
-    for post in Posts.query.all():
-        image_file = url_for('static', filename='profile_pics/' + post.traveler.image_file)
-        all_posts.append({'id': post.id, 'title': post.title, 'date_posted': post.date_posted, 'user_id': post.user_id,
-                            'user_name': post.traveler.username, 'user_image': image_file,
-                          'start_date': post.start_date, 'end_date': post.end_date, 'country': post.country,
-                          'city': post.city, 'latitude': post.latitude, 'longitude': post.longitude, 'content': post.content})
+    if current_user.is_authenticated:
+        user = User.query.get_or_404(current_user.id)
+        for post in (Posts.query.filter_by(traveler=current_user).union\
+                    (Posts.query.join(Posts.traveler, aliased=True).join(User.followers, aliased=True)
+                             .filter_by(follower_id=user.id))).order_by(desc(Posts.date_posted)).all():
+            image_file = url_for('static', filename='profile_pics/' + post.traveler.image_file)
+            all_posts.append({'id': post.id, 'title': post.title, 'date_posted': post.date_posted, 'user_id': post.user_id,
+                                'user_name': post.traveler.username, 'user_image': image_file,
+                              'start_date': post.start_date, 'end_date': post.end_date, 'country': post.country,
+                              'city': post.city, 'latitude': post.latitude, 'longitude': post.longitude, 'content': post.content})
+
     return jsonify(all_posts)
 
 

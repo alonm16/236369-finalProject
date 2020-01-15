@@ -53,7 +53,10 @@ class User(db.Model, UserMixin):
     notifications = db.relationship('Notification', foreign_keys=[Notification.user_id], backref=db.backref('user', lazy='joined'),
                                lazy='dynamic', cascade='all, delete-orphan')
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}', '{self.image_file}')"
+        return self.id
+
+    def __str__(self):
+        return str(self.id)
 
     def follow(self, user):
         if not self.is_following(user):
@@ -113,5 +116,5 @@ class Posts(db.Model):
                                lazy='dynamic', cascade='all, delete-orphan')
 
     def __repr__(self):
-        return f"Posts('{self.date_posted}')"
+        return f"Posts('{self.date_posted}','{self.traveler}')"
 
