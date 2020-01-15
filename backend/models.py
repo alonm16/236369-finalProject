@@ -1,6 +1,7 @@
 from datetime import datetime
 from backend import db, login_manager
 from flask_login import UserMixin
+from math import sqrt
 
 
 class Subscribe(db.Model):
@@ -118,3 +119,7 @@ class Posts(db.Model):
     def __repr__(self):
         return f"Posts('{self.date_posted}','{self.traveler}')"
 
+    def is_in_radius(self, lat, lng, radius):
+        dist = (self.latitude-lat)**2 + (self.longitude-lng)**2
+        dist = sqrt(dist)
+        return dist<=radius

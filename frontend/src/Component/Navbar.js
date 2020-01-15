@@ -130,6 +130,11 @@ class Navbar extends Component {
                 New post
               </Link>
             </li>
+           <li className="nav-item">
+           <Link to="/FindPartners" className="nav-link">
+            Find Partners
+           </Link>
+          </li>
           </ul>
           {localStorage.usertoken ? userLink : loginRegLink}
 

@@ -9,6 +9,7 @@ import Profile from './Component/Profile'
 import AddPost from './Component/AddPost'
 import EditPost from "./Component/EditPost";
 import {Redirect} from "react-router-dom";
+import FindPartners from "./Component/FindPartners";
 
 
 function isLoggedIn() {
@@ -49,6 +50,9 @@ class App extends Component {
               <Route exact path="/EditPost/:id" render={(props) => (
                 isLoggedIn() ? (
                     <EditPost {...props} />) : (<Redirect to="/login"/> )
+            )}/>
+             <Route exact path="/FindPartners" render={(props) => (
+                    <FindPartners {...props} />
             )}/>
           </div>
         </div>
