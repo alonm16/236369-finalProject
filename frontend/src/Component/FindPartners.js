@@ -3,29 +3,10 @@ import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
 import {Map, TileLayer, Marker, Popup, MapControl, withLeaflet} from 'react-leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import L from 'leaflet';
 import ReactLeafletSearch from "react-leaflet-search";
 import Alert from "reactstrap/es/Alert";
 import axios from "axios";
-
-
-
-export const addPost = newPost => {
-  return axios
-    .post('http://127.0.0.1:5000/addPost', {
-      title: newPost.title,
-      startDate: newPost.startDate,
-      endDate: newPost.endDate,
-      country: newPost.country,
-      city: newPost.city,
-      content: newPost.content,
-      latitude: newPost.latitude,
-      longitude: newPost.longitude
-
-    })
-    .then(response => {
-        return response.data
-    })
-};
 
 const validateForm = (errors) => {
   let valid = true;
@@ -56,7 +37,6 @@ class FindPartners extends Component {
     }
 
     this.onChange = this.onChange.bind(this)
-    this.onSubmit = this.onSubmit.bind(this)
   }
 
   handleChangeStart = date => {
@@ -108,36 +88,7 @@ class FindPartners extends Component {
         }
         this.setState({errors, [name]: value});
   }
-  onSubmit(e) {
-    e.preventDefault()
-    this.setState({invalid: 0});
-    if(this.state.markers.length==0)
-        {
-             this.setState({invalid: 1});
-             return;
-        }
-     const newPost = {
-      title: this.state.title,
-      startDate: this.state.startDate,
-      endDate: this.state.endDate,
-      country: this.state.country,
-      city: this.state.city,
-      content: this.state.content,
-      latitude: this.state.markers[0]['lat'] ,
-      longitude: this.state.markers[0]['lng']
-    };
 
-     if (validateForm(this.state.errors)) {
-         addPost(newPost).then(res => {
-             if (res == 'Created') {
-                 this.props.history.push(`/`)
-             }
-         })
-     }
-     else{
-         this.setState({invalid: 1});
-     }
-  }
 
   addMarker = (e) => {
     const lat = e.latlng['lat'];
@@ -146,7 +97,8 @@ class FindPartners extends Component {
     axios.defaults.withCredentials = true;
      axios
     .get('http://127.0.0.1:5000/getMarkers', {
-        params: {lat: lat, lng: lng, radius: this.state.radius, start: this.state.startDate, end: this.state.endDate}
+        params: {lat: lat, lng: lng, radius: this.state.radius, start: this.state.startDate, end: this.state.endDate
+        ,onlyFollowing: false}
     })
     .then(response => {
         this.setState({
@@ -157,9 +109,30 @@ class FindPartners extends Component {
 
   };
 
+  componentDidMount() {
+       axios.defaults.withCredentials = true;
+     axios
+    .get('http://127.0.0.1:5000/getMarkers', {
+        params: {lat: 0, lng: 0, radius: this.state.radius, start: this.state.startDate, end: this.state.endDate
+            , onlyFollowing: true}
+    })
+    .then(response => {
+        this.setState({
+            markers: response.data.markers,
+            descriptions: response.data.descriptions
+        })
+    })
+  }
 
-
-  render() {
+    render() {
+      const greenIcon = new L.Icon({
+      iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+      iconSize: [25, 41],
+      iconAnchor: [12, 41],
+      popupAnchor: [1, -34],
+      shadowSize: [41, 41]
+    });
     return (
       <div className="container">
         <div className="row">
@@ -213,7 +186,7 @@ class FindPartners extends Component {
             onClick={this.addMarker}
             zoom={13}
             >
-                 <ReactLeafletSearch  position="topleft"
+                 <ReactLeafletSearch position="topleft"
                     inputPlaceholder="Enter a place"
                     search={[]} // Setting this to [lat, lng] gives initial search input to the component and map flies to that coordinates, its like search from props not from user
                     zoom={12} // Default value is 10
@@ -228,15 +201,22 @@ class FindPartners extends Component {
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
             />
-            {this.state.markers.map((position, idx) =>
-              <Marker key={`marker-${idx}`} position={position}>
+            {this.state.markers.map((position, idx) => this.state.descriptions[idx]['is_following']?
+              <Marker key={`marker-${idx}`} icon={greenIcon}  position={position}>
                   {this.state.markers.length>0 && <Popup>
-                <span>latitude: {this.state.markers[idx]['lat']} <br/> longitude: {this.state.markers[idx]['lng']}
-                <br/> title: {this.state.descriptions[idx]['title']}
+                <span>
                  <br/> user: {this.state.descriptions[idx]['user_name']}
                  <br/> title: {this.state.descriptions[idx]['title']}
-                 <br/> start date: {this.state.descriptions[idx]['startDate'] }
-                 <br/> end date: {this.state.descriptions[idx]['endDate']}</span>
+                 <br/> start date: {(new Date(this.state.descriptions[idx]['startDate'])).toLocaleDateString('en-GB') }
+                 <br/> end date: {(new Date(this.state.descriptions[idx]['endDate'])).toLocaleDateString('en-GB')}</span>
+              </Popup>}
+            </Marker>:  <Marker key={`marker-${idx}`}   position={position}>
+                  {this.state.markers.length>0 && <Popup>
+                <span>
+                 <br/> user: {this.state.descriptions[idx]['user_name']}
+                 <br/> title: {this.state.descriptions[idx]['title']}
+                 <br/> start date: {(new Date(this.state.descriptions[idx]['startDate'])).toLocaleDateString('en-GB') }
+                 <br/> end date: {(new Date(this.state.descriptions[idx]['endDate'])).toLocaleDateString('en-GB')}</span>
               </Popup>}
             </Marker>
             )}

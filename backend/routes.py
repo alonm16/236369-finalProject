@@ -205,6 +205,16 @@ def get_markers():
     radius = float(request.args.get('radius'))
     start_date = request.args.get('start')
     end_date = request.args.get('end')
+    if request.args.get('onlyFollowing'):
+        for cur_post in Posts.query.all():
+            cur_user = User.query.get_or_404(cur_post.user_id)
+            if current_user.is_following(cur_user):
+                markers.append({'lat': cur_post.latitude, 'lng': cur_post.longitude})
+                descriptions.append({'title': cur_post.title, 'user_name': cur_user.username,
+                                     'endDate': cur_post.end_date, 'startDate': cur_post.start_date,
+                                     'is_following': current_user.is_following(cur_user)})
+        return jsonify({'markers': markers, 'descriptions': descriptions})
+
     for cur_post in Posts.query.all():
         if current_user.id == cur_post.user_id:
             continue
@@ -351,7 +361,6 @@ def subscribe(post_id):
 @app.route('/is_subscribed/<int:post_id>', methods=['GET'])
 @login_required
 def is_subscribed(post_id):
-    print('hi',post_id)
     post = Posts.query.get_or_404(post_id)
     if current_user.is_subscribed(post):
         return 'True'
