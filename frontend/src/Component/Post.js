@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+
 import jwt_decode from "jwt-decode";
 import axios from "axios";
 import {
@@ -17,10 +18,11 @@ import JavascriptTimeAgo from "javascript-time-ago";
 
 import en from "javascript-time-ago/locale/en";
 import ru from "javascript-time-ago/locale/ru";
-
+import he from "javascript-time-ago/locale/he";
 // Initialize the desired locales.
 JavascriptTimeAgo.locale(en);
 JavascriptTimeAgo.locale(ru);
+JavascriptTimeAgo.locale(he);
 
 class Post extends Component {
   constructor() {
@@ -94,7 +96,7 @@ class Post extends Component {
           console.log(err);
         });
 
-       axios
+      axios
         .get("http://127.0.0.1:5000/userDetails/" + this.props.user_name)
         .then(response => {
           this.setState({
@@ -105,8 +107,16 @@ class Post extends Component {
         .catch(err => {
           console.log(err);
         });
-
     }
+  }
+  showPostCreator() {
+    // Simulate a mouse click:
+    window.location.href = "http://127.0.0.1:3000/users/" + this.props.user_id;
+
+    // Simulate an HTTP redirect:
+    window.location.replace(
+      "http://127.0.0.1:3000/users/" + this.props.user_id
+    );
   }
 
   render() {
@@ -114,25 +124,36 @@ class Post extends Component {
       <Card style={{ width: "60rem" }}>
         <CardHeader align="right">
           <div id="textbox">
-            <p style={{ float: "left" }}>
-              <img
-                className="center"
-                className="rounded-circle account-img"
-                src={"http://127.0.0.1:5000" + this.props.user_image}
-                height="40"
-                width="40"
-              />
-
-              <b>&nbsp;&nbsp;&nbsp;{this.state.user_first}</b>
-              <b>&nbsp;{this.state.user_last}</b>
-            </p>
-            <p style={{ float: "right" }}>
+            <div style={{ verticalAlign: "top", float: "left" }}>
+              <a href={`/users/${this.props.user_id}`}>
+                <img
+                  onClick={this.showPostCreator.bind(this)}
+                  className="center"
+                  className="rounded-circle account-img"
+                  src={"http://127.0.0.1:5000" + this.props.user_image}
+                  style={{ float: "left" }}
+                  height="50"
+                  width="50"
+                />
+              </a>
+              &nbsp;&nbsp;&nbsp;
+              <b>{this.state.user_first}</b>
+              <b onClick={this.showPostCreator.bind(this)}>
+                &nbsp;{this.state.user_last}
+              </b>{" "}
+              <br />
+              <a href={`/users/${this.props.user_id}`}>
+                {this.props.user_name}
+              </a>
+            </div>
+            <text
+              style={{ float: "right" }}
+              onClick={this.showPostCreator.bind(this)}
+            >
               {" "}
               <ReactTimeAgo date={this.props.date_posted} />
-            </p>
+            </text>
           </div>
-
-
         </CardHeader>
 
         <CardBody>
@@ -140,6 +161,7 @@ class Post extends Component {
             <b>{this.props.title}</b>
           </CardTitle>
           <CardText>{this.props.content}</CardText>
+
         </CardBody>
         {this.props.current_user !== this.props.user_id && (
           <Button
@@ -152,7 +174,6 @@ class Post extends Component {
           >
             {this.state.isSubscribed ? "Unsubscribe" : "Subscribe"}
           </Button>
-
         )}
       </Card>
     );

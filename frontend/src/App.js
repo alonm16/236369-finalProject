@@ -25,7 +25,8 @@ class App extends Component {
       <Router>
         <div className="App">
           <Navbar />
-          <Route exact path="/" component={Landing} />
+          <Route exact path="/" render={(props) =>
+                    <Landing {...props} /> }/>
           <div className="container">
             <Route exact path="/register" render={(props) => (
                 !isLoggedIn() ? (

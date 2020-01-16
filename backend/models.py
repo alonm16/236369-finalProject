@@ -88,6 +88,10 @@ class User(db.Model, UserMixin):
             f = Subscribe(subscriber=self, post=post)
             db.session.add(f)
 
+    def notify(self, post):
+        f = Notification(user=self, post=post,kind='EDITED')
+        db.session.add(f)
+
     def unsubscribe(self, post):
         f = self.subscribes.filter_by(post_id=post.id).first()
         if f:
@@ -115,7 +119,8 @@ class Posts(db.Model):
     content = db.Column(db.Text, nullable=False)
     subscribers = db.relationship('Subscribe', foreign_keys=[Subscribe.post_id], backref=db.backref('post', lazy='joined'),
                                lazy='dynamic', cascade='all, delete-orphan')
-
+    notifications = db.relationship('Notification', foreign_keys=[Notification.post_id], backref=db.backref('post', lazy='joined'),
+                                    lazy='dynamic')
     def __repr__(self):
         return f"Posts('{self.date_posted}','{self.traveler}')"
 
