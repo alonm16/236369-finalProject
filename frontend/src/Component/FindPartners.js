@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
-import {Map, TileLayer, Marker, Popup, MapControl, withLeaflet} from 'react-leaflet';
+import {Map, TileLayer, Marker, Popup, MapControl, withLeaflet, Circle} from 'react-leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 import L from 'leaflet';
 import ReactLeafletSearch from "react-leaflet-search";
@@ -23,6 +23,7 @@ class FindPartners extends Component {
       startDate: new Date(),
       endDate: new Date(),
       radius: 0,
+      clicked: false,
       lat: 51.505,
       lng: -0.09,
       zoom: 13,
@@ -93,7 +94,8 @@ class FindPartners extends Component {
   addMarker = (e) => {
     const lat = e.latlng['lat'];
     const lng = e.latlng['lng'];
-    this.setState({lat:lat, lng:lng});
+
+    this.setState({lat:lat, lng:lng, clicked:true});
     axios.defaults.withCredentials = true;
      axios
     .get('http://127.0.0.1:5000/getMarkers', {
@@ -201,6 +203,7 @@ class FindPartners extends Component {
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
             />
+                 {this.state.clicked?   <Circle center={[this.state.lat, this.state.lng]} fillColor="red" color = "red" radius={this.state.radius*100} />: null}
             {this.state.markers.map((position, idx) => this.state.descriptions[idx]['is_following']?
               <Marker key={`marker-${idx}`} icon={greenIcon}  position={position}>
                   {this.state.markers.length>0 && <Popup>
@@ -223,9 +226,6 @@ class FindPartners extends Component {
           </Map>
               </div>
             </form>
-              <p className="text-secondary">
-                  <h5>Latitude: {this.state.lat} &nbsp;&nbsp;&nbsp;&nbsp; Longitude: {this.state.lng}</h5>
-                  </p>
           </div>
         </div>
       </div>
