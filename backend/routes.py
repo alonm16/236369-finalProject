@@ -298,6 +298,10 @@ def update_post(post_id):
     post.end_date = post_update['endDate']
     post.latitude = post_update['latitude']
     post.longitude = post_update['longitude']
+    for element in Posts.query.join(Posts.subscribers).filter_by(post_id=post_id):
+        user = User.query.get_or_404(element.user_id)
+        post = Posts.query.get_or_404(element.id)
+        user.notify(post)
     db.session.add(post)
     db.session.commit()
     return 'Updated'
@@ -320,7 +324,6 @@ def subscribe(post_id):
         current_user.subscribe(post)
     else:
         current_user.unsubscribe(post)
-
     db.session.commit()
     return 'True'
 

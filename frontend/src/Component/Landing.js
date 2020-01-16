@@ -35,33 +35,30 @@ class Landing extends Component {
     if (token) {
       const decoded = jwt_decode(token);
       this.setState({ current_user: decoded.identity.id });
-      if(this.props.type==1)
-      {
-         axios
-        .get("http://127.0.0.1:5000/my_posts/"+this.props.id)
-        .then(response => {
-          this.setState({
-            feed: response.data
+      if (this.props.type == 1) {
+        axios
+          .get("http://127.0.0.1:5000/my_posts/" + this.props.id)
+          .then(response => {
+            this.setState({
+              feed: response.data
+            });
+            console.log(this.state.feed);
+          })
+          .catch(err => {
+            console.log(err);
           });
-          console.log(this.state.feed);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-      }
-      else
-      {
-         axios
-        .get("http://127.0.0.1:5000/posts")
-        .then(response => {
-          this.setState({
-            feed: response.data
+      } else {
+        axios
+          .get("http://127.0.0.1:5000/posts")
+          .then(response => {
+            this.setState({
+              feed: response.data
+            });
+            console.log(this.state.feed);
+          })
+          .catch(err => {
+            console.log(err);
           });
-          console.log(this.state.feed);
-        })
-        .catch(err => {
-          console.log(err);
-        });
       }
     }
   }
@@ -87,6 +84,7 @@ class Landing extends Component {
                 longitude={listitem.longitude}
                 content={listitem.content}
                 current_user={this.state.current_user}
+                history={this.props.history}
               >
                 .
               </Post>
