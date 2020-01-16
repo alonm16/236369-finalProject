@@ -139,7 +139,7 @@ class Post extends Component {
               &nbsp;&nbsp;&nbsp;
               <b>{this.state.user_first}</b>
               <b onClick={this.showPostCreator.bind(this)}>
-                &nbsp;{this.state.user_last}
+                &nbsp;{this.state.user_last}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               </b>{" "}
               <br />
               <a href={`/users/${this.props.user_id}`}>
