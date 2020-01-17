@@ -59,7 +59,6 @@ const validateForm = errors => {
 window.onclick = function(event) {
   if (!event.target.matches(".dropbtn")) {
     let posts = document.getElementById("postid");
-    console.log(posts);
   }
 };
 
@@ -82,6 +81,8 @@ class Landing extends Component {
       const decoded = jwt_decode(token);
       this.setState({ current_user: decoded.identity.id });
       if (this.props.type == 1) {
+            axios.defaults.withCredentials = true;
+
         axios
           .get("http://127.0.0.1:5000/my_posts/" + this.props.id)
           .then(response => {
@@ -94,6 +95,7 @@ class Landing extends Component {
             console.log(err);
           });
       } else {
+          axios.defaults.withCredentials = true;
         axios
           .get("http://127.0.0.1:5000/posts")
           .then(response => {
@@ -106,8 +108,10 @@ class Landing extends Component {
             console.log(err);
           });
       }
+      console.log(token)
     }
   }
+
 
   onSubmit(e) {
     e.preventDefault();
@@ -135,6 +139,8 @@ class Landing extends Component {
       if (!validateForm(pos.state.errors)) pos.setState({ invalid: 1 });
     }
   }
+
+
 
   render() {
     return localStorage.usertoken ? (

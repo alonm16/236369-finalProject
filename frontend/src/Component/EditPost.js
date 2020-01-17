@@ -72,8 +72,10 @@ export class EditPost extends Component {
       const decoded = jwt_decode(token)
         this.setState({current_user: decoded.identity.id});
     }
-
+        axios.defaults.withCredentials = true;
         axios.get('http://127.0.0.1:5000/getPost/' + this.props.match.params.id).then((response) => {
+                if(response.data.user_id != this.state.current_user)
+                        this.props.history.push(`/`);
                 this.setState({
                   title: response.data.title,
                   country: response.data.country,
@@ -85,6 +87,7 @@ export class EditPost extends Component {
                   center: [response.data.latitude, response.data.longitude]
                 });
             }).catch(err => {
+                this.props.history.push(`/`);
                 console.log(err)
             });
   }
