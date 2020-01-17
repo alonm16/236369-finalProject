@@ -15,8 +15,8 @@ export class Profile extends Component{
         username: '',
         email: '',
         image_file: '',
-        postsFlag: 1,
-        aboutFlag:0,
+        postsFlag:0,
+        aboutFlag:1,
         followingFlag:0,
         followersFlag:0,
         isFollowing: false,
@@ -218,7 +218,7 @@ export class Profile extends Component{
                 {this.state.followersFlag  ? <Users id ={this.props.match.params.id} type={1} flag={this.state.isFollowing}/> : null}
                 {this.state.followingFlag  ? <Users id ={this.props.match.params.id} type={2} flag={this.state.isFollowing}/> : null}
                 {this.state.postsFlag  ? <Landing type ={1} id ={this.props.match.params.id}/> : null}
-                    <div className="text-center">
+                    <div className="text-center"     style={{paddingBottom:'20px'}}>
                     {(this.state.current_user == this.props.match.params.id) && <Button
                               onClick={this.deleteAccount.bind(this)}
                               variant="outline-danger"
