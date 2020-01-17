@@ -53,7 +53,8 @@ class App extends Component {
                     <EditPost {...props} />) : (<Redirect to="/login"/> )
             )}/>
              <Route exact path="/FindPartners" render={(props) => (
-                    <FindPartners {...props} />
+                     isLoggedIn() ? (
+                    <FindPartners {...props} />) : (<Redirect to="/login"/>)
             )}/>
           </div>
         </div>

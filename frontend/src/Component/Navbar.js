@@ -90,12 +90,21 @@ class Navbar extends Component {
                       onClick={this.get_user.bind(this)}
                     >Search</Button>
               </Form>
-        <li className="nav-item">
-          <a href="" onClick={this.logOut.bind(this)} className="nav-link">
-           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logout
-          </a>
+         <li className="nav-item">
+          <Link to="/AddPost" className="nav-link">
+            New Post
+          </Link>
         </li>
-
+           <li className="nav-item">
+           <Link to="/FindPartners" className="nav-link">
+            Find Partners
+           </Link>
+           </li>
+          <li className="nav-item">
+          <a href="" onClick={this.logOut.bind(this)} className="nav-link">
+          Logout
+          </a>
+          </li>
       </ul>
 
 
@@ -125,16 +134,6 @@ class Navbar extends Component {
                 Home
               </Link>
             </li>
-             <li className="nav-item">
-              <Link to="/AddPost" className="nav-link">
-                New post
-              </Link>
-            </li>
-           <li className="nav-item">
-           <Link to="/FindPartners" className="nav-link">
-            Find Partners
-           </Link>
-          </li>
           </ul>
           {localStorage.usertoken ? userLink : loginRegLink}
 

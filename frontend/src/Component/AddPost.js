@@ -10,6 +10,7 @@ import axios from "axios";
 
 
 export const addPost = newPost => {
+    axios.defaults.withCredentials = true;
   return axios
     .post('http://127.0.0.1:5000/addPost', {
       title: newPost.title,

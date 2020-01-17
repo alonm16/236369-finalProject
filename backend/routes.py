@@ -241,6 +241,7 @@ def follow(user_id):
 
 
 @app.route("/addPost", methods=['POST'])
+@login_required
 def addPost():
     data = request.get_json()
     if not data or not 'title' in data or not 'content' in data:
@@ -271,6 +272,7 @@ def deletePost(post_id):
 
 
 @app.route("/posts", methods=['GET'])
+@login_required
 def get_posts():
     all_posts = []
     if current_user.is_authenticated:
@@ -311,16 +313,18 @@ def deleteAccount(user_id):
 @app.route("/getPost/<int:post_id>", methods=['GET'])
 def get_post(post_id):
     post = Posts.query.get_or_404(post_id)
-    return jsonify({'title': post.title, 'country': post.country, 'city': post.city, 'content': post.content,
+    return jsonify({'user_id': post.user_id, 'title': post.title, 'country': post.country, 'city': post.city, 'content': post.content,
                     'startDate': post.start_date, 'endDate': post.end_date, 'latitude': post.latitude,
                     'longitude': post.longitude})
 
 
 @app.route("/editPost/<int:post_id>", methods=['PUT'])
+@login_required
 def update_post(post_id):
     post = Posts.query.get_or_404(post_id)
+    if current_user.id != post.user_id:
+        return "Not Post creator"
     post_update = request.get_json()
-    print(post_update['latitude'])
     post.title = post_update['title']
     post.content = post_update['content']
     post.country = post_update['country']

@@ -72,6 +72,7 @@ export class Profile extends Component{
                     followed_amount: response.data.followed,
                 })
             }).catch(err => {
+                this.props.history.push(`/`);
                 console.log(err)
             });
         axios.defaults.withCredentials = true;
