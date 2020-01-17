@@ -139,7 +139,7 @@ class FindPartners extends Component {
                     {this.state.invalid >0 &&  this.state.markers.length==0 && <Alert color="danger">
                   Please choose a location on map
                 </Alert> }
-                 <div className="form-group" class = "left"  style={{ paddingLeft:'150px'}}>
+                 <div className="form-group" class = "left2"  style={{ paddingLeft:'150px'}}>
                        <label htmlFor="name">Start date</label><br></br>
                                     <DatePicker
                                      name="StartDate"
@@ -170,7 +170,7 @@ class FindPartners extends Component {
                                       noValidate
                                     />
                  </div>
-                  <div class = "right" style={{paddingTop:'10px'}}>
+                  <div class = "right2" style={{paddingTop:'10px'}}>
                      <Map
                     center={[51.505, -0.09]}
                     onClick={this.addMarker}
