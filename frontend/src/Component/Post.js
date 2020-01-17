@@ -211,6 +211,33 @@ class Post extends Component {
         <CardBody>
           <CardTitle>
             <b>{this.props.title}</b>
+            <div style={{ float: "right" }}>
+              {this.props.current_user === this.props.user_id && (
+                <div class="dropdown">
+                  <div
+                    onClick={this.showOptions.bind(this)}
+                    style={{
+                      width: "15px",
+                      height: "15px",
+                      backgroundImage:
+                        "radial-gradient(circle at center, black 2px, transparent 2px)",
+                      backgroundSize: "2px 5px",
+                      cursor: "pointer"
+                    }}
+                  ></div>
+                  {this.state.showOptions && (
+                    <div
+                      id="myDropdown"
+                      ref={this.setWrapperRef}
+                      class="dropdown-content"
+                    >
+                      <a href="#editPost">Edit</a>
+                      <a href="#deletePost">Delete</a>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </CardTitle>
           <CardText style={{ float: "left" }}>{this.props.content}</CardText>
           <text style={{ float: "right" }}>
@@ -238,21 +265,6 @@ class Post extends Component {
               />
             ) : null}
           </text>
-          <div class="dropdown">
-            <button onClick={this.showOptions.bind(this)} class="dropbtn">
-              Options
-            </button>
-            {this.state.showOptions && (
-              <div
-                id="myDropdown"
-                ref={this.setWrapperRef}
-                class="dropdown-content"
-              >
-                <a href="#editPost">Edit</a>
-                <a href="#deletePost">Delete</a>
-              </div>
-            )}
-          </div>
         </CardBody>
         {this.props.current_user !== this.props.user_id && (
           <Button
