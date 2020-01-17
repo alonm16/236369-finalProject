@@ -15,7 +15,7 @@ import {
 } from "reactstrap";
 import ReactTimeAgo from "react-time-ago";
 import JavascriptTimeAgo from "javascript-time-ago";
-
+import MapPopup from "./MapPopup";
 import en from "javascript-time-ago/locale/en";
 import ru from "javascript-time-ago/locale/ru";
 import he from "javascript-time-ago/locale/he";
@@ -43,7 +43,8 @@ class Post extends Component {
       latitude: "",
       longitude: "",
       content: "",
-      current_user: ""
+      current_user: "",
+      showMapPopup: false
     };
   }
 
@@ -76,6 +77,14 @@ class Post extends Component {
         console.log(err);
       });
   }
+
+  toggleMapPopup() {
+    this.setState({
+      showMapPopup: !this.state.showMapPopup
+    });
+    console.log(this.state.showMapPopup);
+  }
+
   componentDidMount() {
     const token = localStorage.usertoken;
     if (token) {
@@ -136,15 +145,23 @@ class Post extends Component {
                   width="50"
                 />
               </a>
-              &nbsp;&nbsp;&nbsp;
-              <b>{this.state.user_first}</b>
-              <b onClick={this.showPostCreator.bind(this)}>
-                &nbsp;{this.state.user_last}
-              </b>{" "}
-              <br />
-              <a href={`/users/${this.props.user_id}`}>
-                {this.props.user_name}
-              </a>
+              <div style={{ width: "200px", float: "left" }}>
+                <b style={{ float: "left" }}>&nbsp;{this.state.user_first}</b>
+                <b
+                  style={{ float: "left" }}
+                  onClick={this.showPostCreator.bind(this)}
+                >
+                  &nbsp;{this.state.user_last}
+                </b>
+                <br />
+                <b style={{ float: "left" }}>&nbsp;&nbsp;</b>
+                <a
+                  style={{ float: "left" }}
+                  href={`/users/${this.props.user_id}`}
+                >
+                  {this.props.user_name}
+                </a>
+              </div>
             </div>
             <text
               style={{ float: "right" }}
@@ -160,8 +177,32 @@ class Post extends Component {
           <CardTitle>
             <b>{this.props.title}</b>
           </CardTitle>
-          <CardText>{this.props.content}</CardText>
+          <CardText style={{ float: "left" }}>{this.props.content}</CardText>
+          <text style={{ float: "right" }}>
+            <button
+              onClick={this.toggleMapPopup.bind(this)}
+              style={{
+                backgroundColor: "white",
+                background: "white",
+                border: "none",
+                padding: "0!important",
+                fontFamily: "arial, sans-serif",
+                color: "#069",
+                textDecoration: "underline",
+                cursor: "pointer"
+              }}
+            >
+              {" "}
+              view on map
+            </button>
 
+            {this.state.showMapPopup ? (
+              <MapPopup
+                text='Click "Close Button" to hide popup'
+                closePopup={this.toggleMapPopup.bind(this)}
+              />
+            ) : null}
+          </text>
         </CardBody>
         {this.props.current_user !== this.props.user_id && (
           <Button
