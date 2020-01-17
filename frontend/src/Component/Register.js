@@ -129,6 +129,9 @@ class Register extends Component {
       password: this.state.password
     }
 
+    if(this.props.in_home)
+        return newUser;
+
      if (validateForm(this.state.errors)) {
          register(newUser).then(res => {
              if (res == 'Created') {
@@ -251,12 +254,12 @@ class Register extends Component {
                   {this.state.errors.password.length > 0 &&
                 <span className='error'>{this.state.errors.password}</span>}
               </div>
-              <button
+                {!this.props.in_home&&<button
                 type="submit"
                 className="btn btn-lg btn-primary btn-block"
               >
                 Register!
-              </button>
+              </button>}
             </form>
           </div>
         </div>

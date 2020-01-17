@@ -98,3 +98,13 @@ ul.nav.nav-tabs {
     width: 50%;
 
 }
+
+.home-left{ float: left;
+    width: 40%;}
+
+.home-right {
+
+      float: right;
+    width: 60%;
+
+}

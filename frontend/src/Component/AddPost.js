@@ -128,6 +128,9 @@ class AddPost extends Component {
       longitude: this.state.markers[0]['lng']
     };
 
+    if(this.props.in_home)
+        return newPost;
+
      if (validateForm(this.state.errors)) {
          addPost(newPost).then(res => {
              if (res == 'Created') {
@@ -152,14 +155,14 @@ class AddPost extends Component {
     return (
       <div className="container">
         <div className="row">
-          <div className="col-md-6 mt-5 mx-auto" style={{paddingBottom:'20px'}}>
+          <div className=" mt-5 mx-auto" style={{paddingBottom:'20px'}}>
             <form noValidate onSubmit={this.onSubmit}>
-              <h1 className="h3 mb-3 font-weight-normal">Add Post</h1>
+              <h1 className="h3 mb-3 font-weight-normal">Create new post</h1>
               <div className="form-group">
                     {this.state.invalid >0 &&  this.state.markers.length==0 && <Alert color="danger">
                   Please choose a location on map
                 </Alert> }
-             <Map
+             <Map style={{width:'600px', height:'400px'}}
             center={[51.505, -0.09]}
             onClick={this.addMarker}
             zoom={13}
@@ -198,26 +201,36 @@ class AddPost extends Component {
                   noValidate
                 />
               </div>
-              <div className="form-group">
-                  <label htmlFor="name">Start date</label><br></br>
-                <DatePicker
-                 name="StartDate"
-                 selected={this.state.startDate}
-                 onChange={this.handleChangeStart}
-                 dateFormat="dd/MM/yyyy"
-                 minDate = {new Date()}
-                />
-              </div>
-              <div className="form-group">
-                  <label htmlFor="name">End date</label><br></br>
-                <DatePicker
-                 name="EndDate"
-                 selected={this.state.endDate}
-                 onChange={this.handleChangeEnd}
-                 dateFormat="dd/MM/yyyy"
-                 minDate = {new Date()}
-                />
-              </div>
+                <div>
+                    <table>
+                        <tr>
+
+                            <td>
+                                    <label htmlFor="name">Start date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+
+                                    <DatePicker
+                                     name="StartDate"
+                                     selected={this.state.startDate}
+                                     onChange={this.handleChangeStart}
+                                     dateFormat="dd/MM/yyyy"
+                                     minDate = {new Date()}
+                                    />
+                            </td>
+
+                            <td>
+                                        <label htmlFor="name">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;End date
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                                        <DatePicker
+                                         name="EndDate"
+                                         selected={this.state.endDate}
+                                         onChange={this.handleChangeEnd}
+                                         dateFormat="dd/MM/yyyy"
+                                         minDate = {new Date()}
+                                        />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
               <div className="form-group">
                 <label htmlFor="name">Country</label>
                 <input
@@ -244,15 +257,16 @@ class AddPost extends Component {
               </div>
               <div className="form-group">
                 <label htmlFor="name">Content</label>
+                  <br></br>
                <textarea name="content" placeholder="Enter Content" cols="75" rows="5"
                          value={this.state.content} onChange={this.onChange}></textarea>
               </div>
-              <button
+                { !this.props.in_home &&<button
                 type="submit"
                 className="btn btn-lg btn-primary btn-block"
               >
                 Post!
-              </button>
+              </button>}
             </form>
           </div>
         </div>

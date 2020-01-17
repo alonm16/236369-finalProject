@@ -191,7 +191,7 @@ class FindPartners extends Component {
                       attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                       url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
                     />
-                         {this.state.clicked?   <Circle center={[this.state.lat, this.state.lng]} fillColor="red" color = "red" radius={this.state.radius*100} />: null}
+                         {this.state.clicked?   <Circle center={[this.state.lat, this.state.lng]} fillColor="red" color = "red" radius={this.state.radius*1000} />: null}
                     {this.state.markers.map((position, idx) => this.state.descriptions[idx]['is_following']?
                       <Marker key={`marker-${idx}`} icon={greenIcon}  position={position}>
                           {this.state.markers.length>0 && <Popup>

@@ -148,7 +148,6 @@ def login():
 @app.route("/logout", methods=['GET'])
 @login_required
 def logout():
-    print('logging out')
     logout_user()
     return 'Logged Out', 201
 
@@ -244,7 +243,6 @@ def follow(user_id):
 @app.route("/addPost", methods=['POST'])
 def addPost():
     data = request.get_json()
-    print(data)
     if not data or not 'title' in data or not 'content' in data:
         abort(400)
 
@@ -338,6 +336,38 @@ def update_post(post_id):
     db.session.add(post)
     db.session.commit()
     return 'Updated'
+
+
+@app.route("/anonymousSign", methods=['POST'])
+def anonymous_register():
+    if current_user.is_authenticated:
+        abort(400)
+    data = request.get_json()
+    if not data or not 'title' in data or not 'content' in data:
+        abort(400)
+
+    if not 'password' in data or not 'username' in data or not 'first_name' in data \
+            or not 'last_name' in data or not 'gender' in data or not 'birth_date' in data or not 'email' in data:
+        abort(400)
+
+    check_user = User.query.filter_by(email=data['email']).first()
+    if check_user:
+        return 'Email Taken'
+    check_user = User.query.filter_by(username=data['username']).first()
+    if check_user:
+        return 'Username Taken'
+    hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
+    user = User(username=data['username'], first_name=data['first_name'], last_name=data['last_name'],
+                gender=data['gender'], birth_date=datetime.datetime.now(), email=data['email'], password=hashed_password)
+
+    post = Posts(title=data['title'], date_posted=datetime.datetime.now(), start_date=data['startDate'],
+                 end_date=data['endDate'], country=data['country'], city=data['city'], content=data['content']
+                 , latitude=data['latitude'], longitude=data['longitude'], traveler=user)
+
+    db.session.add(user)
+    db.session.add(post)
+    db.session.commit()
+    return 'Created'
 
 
 def date_between(start_date, end_date, start_date_arg, end_date_arg):
