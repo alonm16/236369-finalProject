@@ -19,6 +19,7 @@ import MapPopup from "./MapPopup";
 import en from "javascript-time-ago/locale/en";
 import ru from "javascript-time-ago/locale/ru";
 import he from "javascript-time-ago/locale/he";
+import "../index.css";
 // Initialize the desired locales.
 JavascriptTimeAgo.locale(en);
 JavascriptTimeAgo.locale(ru);
@@ -28,7 +29,7 @@ class Post extends Component {
   constructor() {
     super();
     this.state = {
-      id: 0,
+      post_id: 0,
       title: "",
       date_posted: "",
       user_id: "",
@@ -44,14 +45,17 @@ class Post extends Component {
       longitude: "",
       content: "",
       current_user: "",
-      showMapPopup: false
+      showMapPopup: false,
+      showOptions: false
     };
+    this.setWrapperRef = this.setWrapperRef.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
   }
 
   SubscribePost() {
     axios.defaults.withCredentials = true;
     axios
-      .post("http://127.0.0.1:5000/subscribe/" + this.props.id)
+      .post("http://127.0.0.1:5000/subscribe/" + this.props.post_id)
       .then(response => {
         this.setState({
           isSubscribed: true
@@ -63,10 +67,18 @@ class Post extends Component {
       });
   }
 
+  showOptions() {
+    this.setState({
+      showOptions: !this.state.showOptions
+    });
+    console.log(this.state.showOptions);
+    console.log("got here");
+  }
+
   UnsubscribePost() {
     axios.defaults.withCredentials = true;
     axios
-      .delete("http://127.0.0.1:5000/subscribe/" + this.props.id)
+      .delete("http://127.0.0.1:5000/subscribe/" + this.props.post_id)
       .then(response => {
         this.setState({
           isSubscribed: false
@@ -94,7 +106,7 @@ class Post extends Component {
       });
       axios.defaults.withCredentials = true;
       axios
-        .get("http://127.0.0.1:5000/is_subscribed/" + this.props.id)
+        .get("http://127.0.0.1:5000/is_subscribed/" + this.props.post_id)
         .then(response => {
           const res = response.data == "True" ? true : false;
           this.setState({
@@ -117,7 +129,12 @@ class Post extends Component {
           console.log(err);
         });
     }
+    document.addEventListener("mousedown", this.handleClickOutside);
   }
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClickOutside);
+  }
+
   showPostCreator() {
     // Simulate a mouse click:
     window.location.href = "http://127.0.0.1:3000/users/" + this.props.user_id;
@@ -126,6 +143,24 @@ class Post extends Component {
     window.location.replace(
       "http://127.0.0.1:3000/users/" + this.props.user_id
     );
+  }
+
+  /**
+   * Set the wrapper ref
+   */
+  setWrapperRef(node) {
+    this.wrapperRef = node;
+  }
+
+  /**
+   * Alert if clicked on outside of element
+   */
+  handleClickOutside(event) {
+    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+      this.setState({
+        showOptions: !this.state.showOptions
+      });
+    }
   }
 
   render() {
@@ -203,9 +238,25 @@ class Post extends Component {
               />
             ) : null}
           </text>
+          <div class="dropdown">
+            <button onClick={this.showOptions.bind(this)} class="dropbtn">
+              Options
+            </button>
+            {this.state.showOptions && (
+              <div
+                id="myDropdown"
+                ref={this.setWrapperRef}
+                class="dropdown-content"
+              >
+                <a href="#editPost">Edit</a>
+                <a href="#deletePost">Delete</a>
+              </div>
+            )}
+          </div>
         </CardBody>
         {this.props.current_user !== this.props.user_id && (
           <Button
+            style={{ width: "200px" }}
             variant="outline-primary"
             onClick={
               this.state.isSubscribed

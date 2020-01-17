@@ -23,6 +23,14 @@ import Post from "./Post";
 JavascriptTimeAgo.locale(en);
 JavascriptTimeAgo.locale(ru);
 
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+  if (!event.target.matches(".dropbtn")) {
+    let posts = document.getElementById("postid");
+    console.log(posts);
+  }
+};
+
 class Landing extends Component {
   state = {
     users: [],
@@ -68,9 +76,14 @@ class Landing extends Component {
       <div className="container">
         <ul className="list-unstyled">
           {this.state.feed.map(listitem => (
-            <li key={listitem.id} className={listitem.modifier}>
+            <li
+              key={listitem.id}
+              className={listitem.modifier}
+              style={{ margin: "0 0 10px 0" }}
+            >
               <Post
-                id={listitem.id}
+                id="postid"
+                post_id={listitem.id}
                 title={listitem.title}
                 date_posted={listitem.date_posted}
                 user_id={listitem.user_id}
