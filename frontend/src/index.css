@@ -87,14 +87,14 @@ ul.nav.nav-tabs {
     padding: 1px;
 }
 .left {
-    height: 30px;
+
     float: left;
-    width: 40%;
+    width: 50%;
 
 }
 .right {
 
       float: right;
     width: 50%;
-    height: 30px;
+
 }

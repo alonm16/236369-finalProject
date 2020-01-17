@@ -132,14 +132,14 @@ class FindPartners extends Component {
     return (
       <div className="container">
         <div className="row">
-          <div className="mt-6 mx-auto" style={{paddingBottom:'20px'}}>
+          <div className="mt-6 mx-auto" style={{paddingBottom:'20px', paddingRight:'500px'}}>
             <form noValidate onSubmit={this.onSubmit}>
-              <h1 className="h3 mb-3 font-weight-normal">Find Travel Partners</h1>
+              <h1 className="h3 mb-3 font-weight-normal" align="center" style={{paddingTop:'20px',paddingLeft:'300px'}}>Find Travel Partners</h1>
               <div className="form-group">
                     {this.state.invalid >0 &&  this.state.markers.length==0 && <Alert color="danger">
                   Please choose a location on map
                 </Alert> }
-                 <div className="form-group" class = "left">
+                 <div className="form-group" class = "left"  style={{ paddingLeft:'150px'}}>
                        <label htmlFor="name">Start date</label><br></br>
                                     <DatePicker
                                      name="StartDate"
@@ -160,7 +160,7 @@ class FindPartners extends Component {
                                      <br></br>
                        <label htmlFor="name">Radius</label>
                                     <input
-                                        style={{width:"50%"}}
+                                        style={{width:"70%"}}
                                       type="text"
                                       className="form-control"
                                       name="radius"
@@ -170,7 +170,7 @@ class FindPartners extends Component {
                                       noValidate
                                     />
                  </div>
-                  <div class = "right">
+                  <div class = "right" style={{paddingTop:'10px'}}>
                      <Map
                     center={[51.505, -0.09]}
                     onClick={this.addMarker}
