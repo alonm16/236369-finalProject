@@ -173,6 +173,15 @@ class Post extends Component {
     }
   }
 
+  format_date(date)
+  {
+    let date_array = date.split(" ");
+    let new_date  = date_array[0];
+    for(let i=1; i<date_array.length-2; i++)
+      new_date = new_date.concat(" "+ date_array[i]);
+    return new_date
+  }
+
   render() {
     return (
       <Card style={{ width: "60rem" }}>
@@ -194,7 +203,6 @@ class Post extends Component {
                 <b style={{ float: "left" }}>&nbsp;{this.state.user_first}</b>
                 <b
                   style={{ float: "left" }}
-                  onClick={this.showPostCreator.bind(this)}
                 >
                   &nbsp;{this.state.user_last}
                 </b>
@@ -210,7 +218,6 @@ class Post extends Component {
             </div>
             <text
               style={{ float: "right" }}
-              onClick={this.showPostCreator.bind(this)}
             >
               {" "}
               <ReactTimeAgo date={this.props.date_posted} />
@@ -234,7 +241,7 @@ class Post extends Component {
                       backgroundSize: "2px 5px",
                       cursor: "pointer"
                     }}
-                  ></div>
+                  />
                   {this.state.showOptions && (
                     <div
                       id="myDropdown"
@@ -250,6 +257,8 @@ class Post extends Component {
                 </div>
               )}
             </div>
+            <div style={{ float: "center", paddingRight:'100px' }}>{this.format_date(this.props.start_date)} &nbsp;&nbsp;to&nbsp;&nbsp;
+              {this.format_date(this.props.end_date)}</div>
           </CardTitle>
           <CardText style={{ float: "left" }}>{this.props.content}</CardText>
           <text style={{ float: "right" }}>
@@ -263,7 +272,8 @@ class Post extends Component {
                 fontFamily: "arial, sans-serif",
                 color: "#069",
                 textDecoration: "underline",
-                cursor: "pointer"
+                cursor: "pointer",
+                backgroundImage: ""
               }}
             >
               {" "}
