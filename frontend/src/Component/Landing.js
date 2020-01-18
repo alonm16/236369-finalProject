@@ -178,7 +178,7 @@ class Landing extends Component {
             className="h3 mb-3 font-weight-normal"
             style={{ textAlign: "center", paddingTop: "20px" }}
           >
-            Register & Post
+            Welcome to Travel!
           </h1>
           <div class="home-left">
             <Register
@@ -190,14 +190,14 @@ class Landing extends Component {
           <div class="home-right">
             <AddPost ref={this.postRef} in_home={true}></AddPost>
           </div>
-          <div>
+          <div  style={{ float:'right', paddingRight:'350px', paddingBottom:'20px'}}>
             <button
-              style={{ alignSelf: "center" }}
+
               type="submit"
               onClick={this.onSubmit.bind(this)}
               onSubmit={this.onSubmit.bind(this)}
               className="btn btn-lg btn-primary btn-block"
-              style={{ width: "700px" }}
+              style={{ width: "500px" }}
             >
               Sign Up & Post!
             </button>
