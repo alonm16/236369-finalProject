@@ -13,8 +13,8 @@ const update = updatedPost => {
   return axios
     .put('http://127.0.0.1:5000/editPost/'+updatedPost.id, {
       title: updatedPost.title,
-      startDate: updatedPost.startDate,
-      endDate: updatedPost.endDate,
+      start_date: updatedPost.start_date,
+      end_date: updatedPost.end_date,
       country: updatedPost.country,
       city: updatedPost.city,
       content: updatedPost.content,
@@ -40,8 +40,8 @@ export class EditPost extends Component {
     super()
     this.state = {
      title: '',
-      startDate: new Date(),
-      endDate: new Date(),
+      start_date: new Date(),
+      end_date: new Date(),
       country: '',
       city: '',
       content: '',
@@ -81,8 +81,8 @@ export class EditPost extends Component {
                   country: response.data.country,
                   city: response.data.city,
                   content: response.data.content,
-                  startDate: response.data.startDate,
-                  endDate: response.data.endDate,
+                  start_date: response.data.start_date,
+                  end_date: response.data.end_date,
                   markers: [{'lat':response.data.latitude, 'lng': response.data.longitude}],
                   center: [response.data.latitude, response.data.longitude]
                 });
@@ -94,13 +94,13 @@ export class EditPost extends Component {
 
   handleChangeStart = date => {
     this.setState({
-      startDate: date
+      start_date: date
     });
   };
 
   handleChangeEnd = date => {
     this.setState({
-      endDate: date
+      end_date: date
     });
   };
 
@@ -196,8 +196,8 @@ export class EditPost extends Component {
     const updatedUser = {
       id: this.props.match.params.id,
       title:this.state.title,
-      startDate:this.state.startDate,
-      endDate:this.state.endDate,
+      start_date:this.state.start_date,
+      end_date:this.state.end_date,
       country:this.state.country,
       city:this.state.city,
       content:this.state.content,
@@ -288,7 +288,7 @@ export class EditPost extends Component {
                             <label htmlFor="name">Start date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                             <DatePicker
                              name="startDate"
-                             selected={new Date(this.state.startDate)}
+                             selected={new Date(this.state.start_date)}
                              onChange={this.handleChangeStart}
                              dateFormat="dd/MM/yyyy"
                              minDate = {new Date()}
@@ -300,7 +300,7 @@ export class EditPost extends Component {
                                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
                             <DatePicker
                              name="endDate"
-                             selected={new Date(this.state.endDate)}
+                             selected={new Date(this.state.end_date)}
                              onChange={this.handleChangeEnd}
                              dateFormat="dd/MM/yyyy"
                              minDate = {new Date()}

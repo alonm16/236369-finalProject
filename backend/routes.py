@@ -330,8 +330,8 @@ def update_post(post_id):
     post.content = post_update['content']
     post.country = post_update['country']
     post.city = post_update['city']
-    post.start_date = post_update['startDate']
-    post.end_date = post_update['endDate']
+    post.start_date = post_update['start_date']
+    post.end_date = post_update['end_date']
     post.latitude = post_update['latitude']
     post.longitude = post_update['longitude']
     for element in Subscribe.query.filter_by(post=post):

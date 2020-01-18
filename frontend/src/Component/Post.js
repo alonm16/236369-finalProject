@@ -215,7 +215,7 @@ class Post extends Component {
                 />
               </a>
               <div style={{ width: "200px", float: "left" }}>
-                <b style={{ float: "left" }}>&nbsp;{this.state.user_first}</b>
+                <b style={{ float: "left" }}>&nbsp;&nbsp;{this.state.user_first}</b>
                 <b
                   style={{ float: "left" }}
                 >

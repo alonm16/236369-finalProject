@@ -2,18 +2,18 @@ import React from "react";
 import "../index.css";
 import {Map, Marker, Popup, TileLayer} from "react-leaflet";
 import ReactLeafletSearch from "react-leaflet-search";
+import Button from "react-bootstrap/Button";
 class MapPopup extends React.Component {
 
   render() {
       const position = this.props.position;
     return (
       <div className="popup" >
-        <div style={{backgroundColor:"white", marginLeft:"30px"}}>
+        <div style={{backgroundColor:"#cc9966", marginLeft:"30px" , borderRadius: '10px'}}>
         <div className="popup\_inner">
-          <button onClick={this.props.closePopup}>close me</button>
+          <Button variant="outline-dark" onClick={this.props.closePopup}  style={{marginLeft:'275px'}}>close</Button>
         </div>
-           <br/>
-           <Map style={{width:'600px', height:'400px'}}
+           <Map style={{width:'600px', height:'400px', float:'none', margin:'0 auto'}}
             center={position}
             zoom={13}
             >
@@ -29,6 +29,7 @@ class MapPopup extends React.Component {
             </Marker>
             )}
           </Map>
+            <br/>
       </div>
       </div>
     );
