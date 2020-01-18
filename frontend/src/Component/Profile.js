@@ -11,6 +11,7 @@ import Badge from "react-bootstrap/Badge";
 import Landing from "./Landing";
 
 export class Profile extends Component{
+
     state={
         username: '',
         email: '',
@@ -97,12 +98,18 @@ export class Profile extends Component{
 
   }
    componentDidUpdate (prevProps) {
+
        if (prevProps.location.pathname !== this.props.location.pathname) {
            this.componentDidMount();
        }
    }
 
-   followUser(){
+    componentWillUpdate(nextProps, nextState, nextContext) {
+        if(nextProps.id!=this.props.id)
+            this.componentDidMount();
+    }
+
+    followUser(){
          axios.defaults.withCredentials = true;
          axios.post('http://127.0.0.1:5000/follow/' + this.props.match.params.id).then((response) => {
                 this.setState({
@@ -214,7 +221,6 @@ export class Profile extends Component{
                           </NavItem>
 
                         </Nav>
-
                     {this.state.aboutFlag ? <About id ={this.props.match.params.id} updateInfo={this.updateMenuInfo.bind(this)}
                         updatePic={this.updateMenuPic.bind(this)} /> :null}
                     {this.state.followersFlag  ? <Users id ={this.props.match.params.id} type={1} flag={this.state.isFollowing}/> : null}

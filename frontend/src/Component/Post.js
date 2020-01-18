@@ -242,9 +242,11 @@ class Post extends Component {
 
         <CardBody>
           <CardTitle>
+            <div style={{ float: "left" }}>
             <h5 style={{textDecoration:"underline"}}>{this.props.title}</h5>
+            </div>
             <div style={{ float: "right" }}>
-              {this.props.current_user === this.props.user_id && (
+              {this.state.current_user === this.props.user_id && (
                 <div class="dropdown" style={{paddingRight:'15px'}}>
                   <div
                     onClick={this.showOptions.bind(this)}
@@ -278,9 +280,10 @@ class Post extends Component {
                 </div>
               )}
             </div>
-            <div style={{ float: "center", paddingRight:'100px' }}>{this.format_date(this.props.start_date)} &nbsp;&nbsp;to&nbsp;&nbsp;
+            <div style={{ float: "right" , paddingRight:'15px' }}>{this.format_date(this.props.start_date)} &nbsp;&nbsp;to&nbsp;&nbsp;
               {this.format_date(this.props.end_date)}</div>
           </CardTitle>
+          <br/>
           <CardText style={{ float: "left" , width:'700px'}}>{this.props.content}</CardText>
           <text style={{ float: "right" }}>
             <button
@@ -307,11 +310,10 @@ class Post extends Component {
               />
             ) : null}
           </text>
-          <br/>
-          <br/>
-          <text style={{ float: "right", paddingRight:'10px' }}>{this.props.city}&nbsp;,{this.props.country}</text>
+         
+          <text style={{ float: "right",paddingRight:'10px',paddingTop:'10px' }}>{this.props.city}&nbsp;,{this.props.country}</text>
         </CardBody>
-        {this.props.current_user !== this.props.user_id && (
+        {this.state.current_user !== this.props.user_id && (
           <Button
             style={{ width: "150px", backgroundColor:"green", marginLeft:'8px', marginBottom:'4px' }}
             onClick={
