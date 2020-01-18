@@ -18,7 +18,7 @@ import JavascriptTimeAgo from "javascript-time-ago";
 import en from "javascript-time-ago/locale/en";
 import ru from "javascript-time-ago/locale/ru";
 import Post from "./Post";
-import Register, {register} from "./Register";
+import Register, { register } from "./Register";
 import AddPost from "./AddPost";
 
 // Initialize the desired locales.
@@ -27,7 +27,7 @@ JavascriptTimeAgo.locale(ru);
 
 export const register_post = (newUser, newPost) => {
   return axios
-    .post('http://127.0.0.1:5000/anonymousSign', {
+    .post("http://127.0.0.1:5000/anonymousSign", {
       username: newUser.username,
       first_name: newUser.first_name,
       last_name: newUser.last_name,
@@ -45,15 +45,13 @@ export const register_post = (newUser, newPost) => {
       longitude: newPost.longitude
     })
     .then(response => {
-        return response.data
-    })
+      return response.data;
+    });
 };
 
- const validateForm = (errors) => {
+const validateForm = errors => {
   let valid = true;
-  Object.values(errors).forEach(
-    (val) => val.length > 0 && (valid = false)
-  );
+  Object.values(errors).forEach(val => val.length > 0 && (valid = false));
   return valid;
 };
 
@@ -65,17 +63,17 @@ window.onclick = function(event) {
 };
 
 class Landing extends Component {
-     constructor() {
-         super()
-         this.state = {
-             users: [],
-             feed: [],
-             current_user: "",
-         };
-         this.registerRef = React.createRef();
-         this.postRef = React.createRef();
-         this.onSubmit = this.onSubmit.bind(this)
-     }
+  constructor() {
+    super();
+    this.state = {
+      users: [],
+      feed: [],
+      current_user: ""
+    };
+    this.registerRef = React.createRef();
+    this.postRef = React.createRef();
+    this.onSubmit = this.onSubmit.bind(this);
+  }
 
   componentDidMount() {
     const token = localStorage.usertoken;
@@ -115,40 +113,35 @@ class Landing extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-   const reg = this.registerRef.current;
-   const pos = this.postRef.current;
-   const newUser = reg.onSubmit(e);
-   const newPost = pos.onSubmit(e);
+    const reg = this.registerRef.current;
+    const pos = this.postRef.current;
+    const newUser = reg.onSubmit(e);
+    const newPost = pos.onSubmit(e);
 
     if (validateForm(reg.state.errors) && validateForm(pos.state.errors)) {
-         register_post(newUser, newPost).then(res => {
-             if (res == 'Created') {
-                 this.props.history.push(`/login`)
-             }
-             if (res == 'Username Taken'){
-                 reg.setState({user_taken: 1});
-                 reg.setState({invalid: 1});
-             }
-             if (res == 'Email Taken'){
-                reg.setState({email_taken: 1});
-                reg.setState({invalid: 1});
-             }
-         })
-     }
-     else{
-         if(!validateForm(reg.state.errors))
-            reg.setState({invalid: 1});
-         if(!validateForm(pos.state.errors))
-            pos.setState({invalid:1});
-     }
-
+      register_post(newUser, newPost).then(res => {
+        if (res == "Created") {
+          this.props.history.push(`/login`);
+        }
+        if (res == "Username Taken") {
+          reg.setState({ user_taken: 1 });
+          reg.setState({ invalid: 1 });
+        }
+        if (res == "Email Taken") {
+          reg.setState({ email_taken: 1 });
+          reg.setState({ invalid: 1 });
+        }
+      });
+    } else {
+      if (!validateForm(reg.state.errors)) reg.setState({ invalid: 1 });
+      if (!validateForm(pos.state.errors)) pos.setState({ invalid: 1 });
+    }
   }
 
 
 
   render() {
-    return (
-      localStorage.usertoken?
+    return localStorage.usertoken ? (
       <div className="container">
         <ul className="list-unstyled">
           {this.state.feed.map(listitem => (
@@ -181,30 +174,32 @@ class Landing extends Component {
           ))}
         </ul>
       </div>
-          :
-            <div className="container">
-                <div >
-                  <div class="home-left" >
-                    <Register ref={this.registerRef} in_home={true} history = {this.props.history}>
-                    </Register>
-                  </div>
-                  <div class = "home-right" >
-                    <AddPost ref={this.postRef} in_home={true}></AddPost>
-                  </div>
-                    <div >
-                      <button
-                        type="submit"
-                        onClick={this.onSubmit.bind(this)}
-                        onSubmit={this.onSubmit.bind(this)}
-
-                        className="btn btn-lg btn-primary btn-block"
-                        style={{width:'700px'}}
-                      >
-                        Sign Up & Post!
-                      </button>
-                    </div>
-                </div>
-            </div>
+    ) : (
+      <div className="container">
+        <div>
+          <div class="home-left">
+            <Register
+              ref={this.registerRef}
+              in_home={true}
+              history={this.props.history}
+            ></Register>
+          </div>
+          <div class="home-right">
+            <AddPost ref={this.postRef} in_home={true}></AddPost>
+          </div>
+          <div>
+            <button
+              type="submit"
+              onClick={this.onSubmit.bind(this)}
+              onSubmit={this.onSubmit.bind(this)}
+              className="btn btn-lg btn-primary btn-block"
+              style={{ width: "700px" }}
+            >
+              Sign Up & Post!
+            </button>
+          </div>
+        </div>
+      </div>
     );
   }
 }

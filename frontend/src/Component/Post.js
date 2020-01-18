@@ -145,6 +145,17 @@ class Post extends Component {
     );
   }
 
+  showEditPost() {
+    console.log(this.props.post_id);
+    // Simulate a mouse click:
+    window.location.href =
+      "http://127.0.0.1:3000/EditPost/" + this.props.post_id;
+
+    // Simulate an HTTP redirect:
+    window.location.replace(
+      "http://127.0.0.1:3000/EditPost/" + this.props.post_id
+    );
+  }
   /**
    * Set the wrapper ref
    */
@@ -231,7 +242,9 @@ class Post extends Component {
                       ref={this.setWrapperRef}
                       class="dropdown-content"
                     >
-                      <a href="#editPost">Edit</a>
+                      <button onClick={this.showEditPost.bind(this)}>
+                        EDIT{" "}
+                      </button>
                       <a href="#deletePost">Delete</a>
                     </div>
                   )}
