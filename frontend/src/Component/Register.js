@@ -50,7 +50,7 @@ class Register extends Component {
           password: '',
           first_name: '',
           last_name: '',
-          gender: 'Please choose your gender',
+          gender: '',
       },
       user_taken: 0,
       email_taken: 0,
@@ -71,7 +71,6 @@ class Register extends Component {
         let errors = this.state.errors;
         const { name, value } = e.target;
         this.setState({ [e.target.name]: e.target.value });
-
         switch (name) {
             case 'username':
                 this.setState({user_taken: 0});
@@ -113,6 +112,40 @@ class Register extends Component {
         }
         this.setState({errors, [name]: value});
   }
+
+  emptyFields()
+  {
+      const errors = this.state.errors;
+      errors.username =
+                  this.state.username.length < 1 || this.state.username.length > 20
+                    ? 'Username is not valid!'
+                    : '';
+      errors.email =
+                  validEmailRegex.test(this.state.email)  && this.state.email.length <= 120
+                    ? ''
+                    : 'Email is not valid!';
+        errors.password =
+                  this.state.password.length < 1 || this.state.password > 60
+                    ? 'Password is not valid!'
+                    : '';
+
+        errors.first_name =
+          this.state.first_name.length <1
+            ? 'First name is not valid!'
+            : '';
+
+        errors.last_name =
+          this.state.last_name.length <1
+            ? 'Last name is not valid!'
+            : '';
+
+        errors.gender =
+          this.state.gender.length <1
+            ? 'Please choose your gender!'
+            : '';
+
+  }
+
   onSubmit(e) {
     e.preventDefault()
     this.setState({invalid: 0});
@@ -127,7 +160,10 @@ class Register extends Component {
       birth_date: this.state.birth_date,
       email: this.state.email,
       password: this.state.password
-    }
+    };
+
+    this.emptyFields();
+
 
     if(this.props.in_home)
         return newUser;
@@ -208,12 +244,12 @@ class Register extends Component {
               </div>
               <div className="form-group">
                 <label htmlFor="name">Gender</label><br></br>
-                <input type="radio" name="gender" value="Male" onChange={this.onChange}/> Male<br></br>
-                <input type="radio" name="gender" value="Female" onChange={this.onChange}/> Female<br></br>
-                <input type="radio" name="gender" value="other" onChange={this.onChange}/> Other
-              </div>
-                 {this.state.errors.gender.length > 0 &&
+                <input type="radio" name="gender" value="Male" onChange={this.onChange}/> Male<br/>
+                <input type="radio" name="gender" value="Female" onChange={this.onChange}/> Female<br/>
+                  <input type="radio" name="gender" value="other" onChange={this.onChange}/> Other <br/>
+                    {this.state.errors.gender.length > 0 &&
                 <span className='error'>{this.state.errors.gender}</span>}
+              </div>
               <div className="form-group">
                   <label htmlFor="name">Birth date</label><br></br>
                 <DatePicker

@@ -102,13 +102,15 @@ class Landing extends Component {
             this.setState({
               feed: response.data
             });
-            console.log(this.state.feed);
           })
           .catch(err => {
             console.log(err);
           });
       }
+<<<<<<< HEAD
       console.log(token);
+=======
+>>>>>>> a67bc7775b56b9e71bb3fe5f13a1bc15ed7cf834
     }
   }
 
@@ -176,18 +178,20 @@ class Landing extends Component {
     ) : (
       <div className="container">
         <div>
+            <h1 className="h3 mb-3 font-weight-normal" style={{textAlign:'center', paddingTop:'20px'}}>Register & Post</h1>
           <div class="home-left">
             <Register
               ref={this.registerRef}
               in_home={true}
               history={this.props.history}
-            ></Register>
+            />
           </div>
           <div class="home-right">
             <AddPost ref={this.postRef} in_home={true}></AddPost>
           </div>
-          <div>
+          <div >
             <button
+                style={{alignSelf:'center'}}
               type="submit"
               onClick={this.onSubmit.bind(this)}
               onSubmit={this.onSubmit.bind(this)}

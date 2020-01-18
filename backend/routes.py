@@ -98,7 +98,7 @@ def register():
         return 'Username Taken'
     hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
     user = User(username=data['username'], first_name=data['first_name'], last_name=data['last_name'],
-                gender=data['gender'], birth_date=datetime.datetime.now(), email=data['email'], password=hashed_password)
+                gender=data['gender'], birth_date=date['birth_date'], email=data['email'], password=hashed_password)
     db.session.add(user)
     db.session.commit()
     return 'Created'
@@ -219,7 +219,7 @@ def get_markers():
             continue
         cur_user = User.query.get_or_404(cur_post.user_id)
         if current_user.is_following(cur_user) or (cur_post.is_in_radius(lat, lng, radius) and
-                                                   date_between( cur_post.start_date, cur_post.end_date,start_date, end_date)):
+                                                   date_between(cur_post.start_date, cur_post.end_date,start_date, end_date)):
             markers.append({'lat': cur_post.latitude, 'lng': cur_post.longitude})
             descriptions.append({'title': cur_post.title, 'user_name': cur_user.username,
                                            'endDate': cur_post.end_date, 'startDate': cur_post.start_date,
@@ -244,10 +244,11 @@ def follow(user_id):
 @login_required
 def addPost():
     data = request.get_json()
-    if not data or not 'title' in data or not 'content' in data:
+    if not data or not 'title' in data or not 'content' in data or not 'startDate'in data or not 'endDate' in data\
+            or not 'city' in data or not 'longitude' in data or not 'latitude' in data:
         abort(400)
 
-    post = Posts(title=data['title'], date_posted=datetime.datetime.now(), start_date=data['startDate'],
+    post = Posts(title=data['title'], date_posted=datetime.datetime.utcnow(), start_date=data['startDate'],
                  end_date=data['endDate'], country=data['country'], city=data['city'], content=data['content']
                  , latitude=data['latitude'], longitude=data['longitude'], traveler=current_user)
     db.session.add(post)
@@ -263,8 +264,6 @@ def deletePost(post_id):
     if post.user_id != current_user.id:
         return 'Not user post'
     subscribers = post.subscribers
-    print('ya')
-    print('did it work?')
     db.session.delete(post)
     db.session.commit()
     return 'True'
@@ -364,9 +363,9 @@ def anonymous_register():
         return 'Username Taken'
     hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
     user = User(username=data['username'], first_name=data['first_name'], last_name=data['last_name'],
-                gender=data['gender'], birth_date=datetime.datetime.now(), email=data['email'], password=hashed_password)
+                gender=data['gender'], birth_date=datetime.datetime.utcnow(), email=data['email'], password=hashed_password)
 
-    post = Posts(title=data['title'], date_posted=datetime.datetime.now(), start_date=data['startDate'],
+    post = Posts(title=data['title'], date_posted=datetime.datetime.utcnow(), start_date=data['startDate'],
                  end_date=data['endDate'], country=data['country'], city=data['city'], content=data['content']
                  , latitude=data['latitude'], longitude=data['longitude'], traveler=user)
 
