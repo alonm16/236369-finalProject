@@ -139,8 +139,8 @@ class Landing extends Component {
 
   render() {
     return localStorage.usertoken ? (
-      <div className="container">
-        <ul className="list-unstyled">
+      <div className="container" style={{paddingLeft:'90px' ,backgroundColor:"#66ccff"}}>
+        <ul className="list-unstyled" style={{paddingTop:'20px', paddingBottom:'20px'}}>
           {this.state.feed.map(listitem => (
             <li
               key={listitem.id}

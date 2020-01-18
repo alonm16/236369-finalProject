@@ -221,14 +221,15 @@ export class Profile extends Component{
                     {this.state.followingFlag  ? <Users id ={this.props.match.params.id} type={2} flag={this.state.isFollowing}/> : null}
                     {this.state.postsFlag  ? <Landing type ={1} id ={this.props.match.params.id}/> : null}
                     </div>}
-                    <div className="text-center"     style={{paddingBottom:'20px'}}>
-                {(this.state.current_user == this.props.match.params.id) && <Button
+                      {(this.state.current_user == this.props.match.params.id && this.state.aboutFlag==1 ) &&
+                    <div className="text-center"  style={{paddingBottom:'20px'}}>
+                        <Button
                           onClick={this.deleteAccount.bind(this)}
                           variant="outline-danger"
                         >
                           Delete Account
-                        </Button> }
-                    </div>
+                        </Button>
+                    </div>}
             </div>
 
         )

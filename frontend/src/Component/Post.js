@@ -297,8 +297,7 @@ class Post extends Component {
                 backgroundImage: ""
               }}
             >
-              {" "}
-              view on map
+              <img src={require('../map.png')} width="40" height="40" />
             </button>
 
             {this.state.showMapPopup ? (

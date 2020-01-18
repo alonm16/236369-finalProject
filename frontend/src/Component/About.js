@@ -402,9 +402,9 @@ export class About extends Component {
               toggleUpdate={this.toggleUpdate}
               onchangeimg={this.onChangeImg}
             />}
-            <div className="col-md-6 mt-1 mx-auto">
-            {!this.state.flag && <Button className="btn btn-lg btn-block" color="secondary" onClick={this.toggleUpdate.bind(this)}>Cancel</Button>}
-            </div>
+            {!this.state.flag &&  <div className="col-md-6 mt-1 mx-auto">
+           <Button className="btn btn-lg btn-block" color="secondary" onClick={this.toggleUpdate.bind(this)}>Cancel</Button>
+            </div>}
             </div>
       </div>
     )

@@ -120,6 +120,11 @@ class Navbar extends Component {
     const loginRegLink = (
       <ul className="navbar-nav">
         <li className="nav-item">
+                <Link to="/" className="nav-link" style={{color:"white"}}>
+                  Home
+                </Link>
+              </li>
+        <li className="nav-item">
           <Link to="/login" className="nav-link" style={{color:"white"}}>
             Login
           </Link>
@@ -134,6 +139,11 @@ class Navbar extends Component {
 
     const userLink = (
       <ul className="navbar-nav">
+          <li className="nav-item">
+                <Link to="/" className="nav-link" style={{color:"white"}}>
+                  Home
+                </Link>
+              </li>
         <li className="nav-item">
           <Link to={"/users/" + this.state.current_user} className="nav-link"  style={{color:"white"}}>
             User
@@ -176,14 +186,9 @@ class Navbar extends Component {
             <div
               onClick={this.showNotifications.bind(this)}
               style={{
-                width: "15px",
-                height: "15px",
-                backgroundImage:
-                  "radial-gradient(circle at center, black 2px, transparent 2px)",
-                backgroundSize: "2px 5px",
                 cursor: "pointer"
               }}
-            />
+            > <img src={require('../bell5.png')} width="25" height="25" /></div>
             {this.state.showNotifications && (
               <div
                 id="myDropdown"
@@ -243,13 +248,7 @@ class Navbar extends Component {
             className="collapse navbar-collapse justify-content-md-center col-md-12 "
             id="navbarsExample10"
           >
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <Link to="/" className="nav-link" style={{color:"white"}}>
-                  Home
-                </Link>
-              </li>
-            </ul>
+
             {localStorage.usertoken ? userLink : loginRegLink}
           </div>
         </nav>
