@@ -98,7 +98,7 @@ def register():
         return 'Username Taken'
     hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
     user = User(username=data['username'], first_name=data['first_name'], last_name=data['last_name'],
-                gender=data['gender'], birth_date=date['birth_date'], email=data['email'], password=hashed_password)
+                gender=data['gender'], birth_date=data['birth_date'], email=data['email'], password=hashed_password)
     db.session.add(user)
     db.session.commit()
     return 'Created'

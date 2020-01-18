@@ -120,12 +120,12 @@ class Navbar extends Component {
     const loginRegLink = (
       <ul className="navbar-nav">
         <li className="nav-item">
-          <Link to="/login" className="nav-link">
+          <Link to="/login" className="nav-link" style={{color:"white"}}>
             Login
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/register" className="nav-link">
+          <Link to="/register" className="nav-link" style={{color:"white"}}>
             Register
           </Link>
         </li>
@@ -135,7 +135,7 @@ class Navbar extends Component {
     const userLink = (
       <ul className="navbar-nav">
         <li className="nav-item">
-          <Link to={"/users/" + this.state.current_user} className="nav-link">
+          <Link to={"/users/" + this.state.current_user} className="nav-link"  style={{color:"white"}}>
             User
           </Link>
         </li>
@@ -155,19 +155,19 @@ class Navbar extends Component {
           />
 
           <Button
-            variant="outline-secondary"
+            variant="outline-primary"  style={{color:"white"}}
             onClick={this.get_user.bind(this)}
           >
             Search
           </Button>
         </Form>
         <li className="nav-item">
-          <Link to="/AddPost" className="nav-link">
+          <Link to="/AddPost" className="nav-link"  style={{color:"white"}}>
             New Post
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/FindPartners" className="nav-link">
+          <Link to="/FindPartners" className="nav-link"  style={{color:"white"}}>
             Find Partners
           </Link>
         </li>
@@ -216,7 +216,7 @@ class Navbar extends Component {
           </b>
         </li>
         <li className="nav-item">
-          <a href="" onClick={this.logOut.bind(this)} className="nav-link">
+          <a href="" onClick={this.logOut.bind(this)} className="nav-link"  style={{color:"white"}}>
             Logout
           </a>
         </li>
@@ -224,8 +224,9 @@ class Navbar extends Component {
     );
 
     return (
+
       <div>
-        <nav className="navbar navbar-expand-lg navbar-dark bg-dark rounded">
+        <nav className="navbar navbar-expand-lg navbar-dark  rounded" style={{backgroundColor:"#2aa700"}}>
           <button
             className="navbar-toggler"
             type="button"
@@ -244,7 +245,7 @@ class Navbar extends Component {
           >
             <ul className="navbar-nav">
               <li className="nav-item">
-                <Link to="/" className="nav-link">
+                <Link to="/" className="nav-link" style={{color:"white"}}>
                   Home
                 </Link>
               </li>
