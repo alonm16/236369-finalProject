@@ -63,12 +63,15 @@ class Notifications extends Component {
         });
     }
   }
-    deleteNotification(e) {
-      e.preventDefault()
-      axios.defaults.withCredentials = true;
-      const id = this.state.current_user;
-         axios.defaults.withCredentials = true;
-         axios.delete('http://127.0.0.1:5000/deleteAccount/' + id);
+  deleteNotification(e) {
+    e.preventDefault();
+    axios.defaults.withCredentials = true;
+    const id = this.state.current_user;
+    axios.defaults.withCredentials = true;
+    axios.delete("http://127.0.0.1:5000/delete_notification/" + id);
+    this.setState({
+      cardDeleted: true
+    });
   }
 
   showPost() {
@@ -83,17 +86,24 @@ class Notifications extends Component {
     return (
       !this.state.cardDeleted && (
         <Card style={{ width: "25rem" }}>
-            <div>
-            <div id="text" style={{ float: "left", width: "22.8rem",textOverflow: "ellipsis",  overflow: "hidden"
- }}>
+          <div>
+            <div
+              id="text"
+              style={{
+                float: "left",
+                width: "22.8rem",
+                textOverflow: "ellipsis",
+                overflow: "hidden"
+              }}
+            >
               {" "}
               <button
                 onClick={this.showPost.bind(this)}
                 style={{
-textOverflow: "ellipsis",  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  overflow: "hidden",
                   float: "left",
                   width: "22.8rem"
-
                 }}
               >
                 <b>
@@ -102,12 +112,12 @@ textOverflow: "ellipsis",  overflow: "hidden",
                 has edited a post on {this.props.title}
               </button>
             </div>
-            <div id="text" style={{ float: "right",width: "2rem"  }}>
-                 <div id="text" style={{ float: "center",width: "2rem" }}>
-              <button >x</button>
-                 </div>
+            <div id="text" style={{ float: "right", width: "2rem" }}>
+              <div id="text" style={{ float: "center", width: "2rem" }}>
+                <button>x</button>
+              </div>
             </div>
-            </div>
+          </div>
         </Card>
       )
     );
