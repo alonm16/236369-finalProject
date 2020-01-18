@@ -121,6 +121,9 @@ export class Profile extends Component{
             });
    }
 
+   componentWillUnmount() {
+   }
+
     unfollowUser(){
          axios.defaults.withCredentials = true;
          axios.delete('http://127.0.0.1:5000/follow/' + this.props.match.params.id).then((response) => {

@@ -310,7 +310,7 @@ class Post extends Component {
               />
             ) : null}
           </text>
-         
+
           <text style={{ float: "right",paddingRight:'10px',paddingTop:'10px' }}>{this.props.city}&nbsp;,{this.props.country}</text>
         </CardBody>
         {this.state.current_user !== this.props.user_id && (

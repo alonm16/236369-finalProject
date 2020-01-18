@@ -11,7 +11,7 @@ class MapPopup extends React.Component {
       <div className="popup" >
         <div style={{backgroundColor:"#cc9966", marginLeft:"30px" , borderRadius: '10px'}}>
         <div className="popup\_inner">
-          <Button variant="outline-dark" onClick={this.props.closePopup}  style={{marginLeft:'275px'}}>close</Button>
+          <Button variant="outline-dark" onClick={this.props.closePopup}  style={{marginLeft:'350px'}}>close</Button>
         </div>
            <Map style={{width:'600px', height:'400px', float:'none', margin:'0 auto'}}
             center={position}

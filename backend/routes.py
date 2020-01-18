@@ -290,7 +290,7 @@ def get_posts():
 def get_my_posts(user_id):
     all_posts = []
     traveler = User.query.get_or_404(user_id)
-    for post in Posts.query.filter_by(traveler=traveler).all():
+    for post in Posts.query.filter_by(traveler=traveler).order_by(desc(Posts.date_posted)).all():
         image_file = url_for('static', filename='profile_pics/' + post.traveler.image_file)
         all_posts.append({'id': post.id, 'title': post.title, 'date_posted': post.date_posted, 'user_id': post.user_id,
                             'user_name': post.traveler.username, 'user_image': image_file,
