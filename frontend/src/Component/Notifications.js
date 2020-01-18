@@ -95,9 +95,10 @@ class Notifications extends Component {
               }}
             >
               {" "}
-              <button
+              <Button variant="outline-danger"
                 onClick={this.showPost.bind(this)}
                 style={{
+                    backgroundColor: "#4dffff",
                   textOverflow: "ellipsis",
                   overflow: "hidden",
                   float: "left",
@@ -108,7 +109,7 @@ class Notifications extends Component {
                   {this.state.user_first}&nbsp;{this.state.user_last}
                 </b>{" "}
                 has edited a post on {this.props.title}
-              </button>
+              </Button>
             </div>
             <div id="text" style={{ float: "right", width: "2rem" }}>
               <div id="text" style={{ float: "center", width: "2rem" }}>
