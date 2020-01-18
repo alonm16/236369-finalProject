@@ -63,12 +63,10 @@ class Notifications extends Component {
         });
     }
   }
-  deleteNotification(e) {
-    e.preventDefault();
-    axios.defaults.withCredentials = true;
+  deleteNotification() {
     const id = this.state.current_user;
     axios.defaults.withCredentials = true;
-    axios.delete("http://127.0.0.1:5000/delete_notification/" + id);
+    axios.delete("http://127.0.0.1:5000/delete_notification/" + this.props.id);
     this.setState({
       cardDeleted: true
     });
@@ -114,7 +112,7 @@ class Notifications extends Component {
             </div>
             <div id="text" style={{ float: "right", width: "2rem" }}>
               <div id="text" style={{ float: "center", width: "2rem" }}>
-                <button>x</button>
+                <button onClick={this.deleteNotification.bind(this)}>x</button>
               </div>
             </div>
           </div>
