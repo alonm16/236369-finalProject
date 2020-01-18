@@ -311,7 +311,7 @@ def deleteAccount(user_id):
 def get_post(post_id):
     post = Posts.query.get_or_404(post_id)
     image_file = url_for('static', filename='profile_pics/' + post.traveler.image_file)
-    return jsonify({'user_id': post.user_id, 'user_name': post.traveler.username, 'user_image': image_file,
+    return jsonify({'user_id': post.user_id, 'user_name': post.traveler.username, 'user_image': image_file, 'id': post_id,
                     'title': post.title, 'date_posted': post.date_posted, 'country': post.country, 'city': post.city, 'content': post.content,
                     'start_date': post.start_date, 'end_date': post.end_date, 'latitude': post.latitude,
                     'longitude': post.longitude})
