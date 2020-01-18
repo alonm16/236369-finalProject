@@ -114,7 +114,7 @@ class AddPost extends Component {
         this.setState({errors, [name]: value});
   }
 
-   emptyFields()
+  emptyFields()
   {
       const errors = this.state.errors;
       errors.title =
@@ -163,9 +163,9 @@ class AddPost extends Component {
 
      if (validateForm(this.state.errors)) {
          addPost(newPost).then(res => {
-          /*   if (res == 'Created') {
+            if (res == 'Created') {
                  this.props.history.push(`/`)
-             }*/
+             }
          })
      }
      else{

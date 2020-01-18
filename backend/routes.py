@@ -98,7 +98,7 @@ def register():
         return 'Username Taken'
     hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
     user = User(username=data['username'], first_name=data['first_name'], last_name=data['last_name'],
-                gender=data['gender'], birth_date=datetime.datetime.now(), email=data['email'], password=hashed_password)
+                gender=data['gender'], birth_date=date['birth_date'], email=data['email'], password=hashed_password)
     db.session.add(user)
     db.session.commit()
     return 'Created'
@@ -248,7 +248,7 @@ def addPost():
             or not 'city' in data or not 'longitude' in data or not 'latitude' in data:
         abort(400)
 
-    post = Posts(title=data['title'], date_posted=datetime.datetime.now(), start_date=data['startDate'],
+    post = Posts(title=data['title'], date_posted=datetime.datetime.utcnow(), start_date=data['startDate'],
                  end_date=data['endDate'], country=data['country'], city=data['city'], content=data['content']
                  , latitude=data['latitude'], longitude=data['longitude'], traveler=current_user)
     db.session.add(post)
@@ -264,7 +264,7 @@ def deletePost(post_id):
         return 'Not user post'
     subscribers = post.subscribers
     for sub in subscribers:
-        notification = Notification(user_id=sub.user_id, post_id=post.id, timestamp=atetime.datetime.now(),
+        notification = Notification(user_id=sub.user_id, post_id=post.id, timestamp=datetime.datetime.utcnow(),
                                     kind="delete")
         db.session.add(notification)
     db.session.delete(post)
@@ -363,9 +363,9 @@ def anonymous_register():
         return 'Username Taken'
     hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
     user = User(username=data['username'], first_name=data['first_name'], last_name=data['last_name'],
-                gender=data['gender'], birth_date=datetime.datetime.now(), email=data['email'], password=hashed_password)
+                gender=data['gender'], birth_date=datetime.datetime.utcnow(), email=data['email'], password=hashed_password)
 
-    post = Posts(title=data['title'], date_posted=datetime.datetime.now(), start_date=data['startDate'],
+    post = Posts(title=data['title'], date_posted=datetime.datetime.utcnow(), start_date=data['startDate'],
                  end_date=data['endDate'], country=data['country'], city=data['city'], content=data['content']
                  , latitude=data['latitude'], longitude=data['longitude'], traveler=user)
 
