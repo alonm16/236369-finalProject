@@ -260,8 +260,8 @@ class Post extends Component {
 
             {this.state.showMapPopup ? (
               <MapPopup
-                text='Click "Close Button" to hide popup'
                 closePopup={this.toggleMapPopup.bind(this)}
+                position = {{'lat': this.props.latitude, 'lng': this.props.longitude}}
               />
             ) : null}
           </text>

@@ -104,13 +104,11 @@ class Landing extends Component {
             this.setState({
               feed: response.data
             });
-            console.log(this.state.feed);
           })
           .catch(err => {
             console.log(err);
           });
       }
-      console.log(token)
     }
   }
 
