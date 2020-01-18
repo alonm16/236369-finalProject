@@ -120,7 +120,8 @@ class Posts(db.Model):
     subscribers = db.relationship('Subscribe', foreign_keys=[Subscribe.post_id], backref=db.backref('post', lazy='joined'),
                                lazy='dynamic', cascade='all, delete-orphan')
     notifications = db.relationship('Notification', foreign_keys=[Notification.post_id], backref=db.backref('post', lazy='joined'),
-                                    lazy='dynamic')
+                                    lazy='dynamic', cascade='all, delete-orphan')
+
     def __repr__(self):
         return f"Posts('{self.date_posted}','{self.traveler}')"
 

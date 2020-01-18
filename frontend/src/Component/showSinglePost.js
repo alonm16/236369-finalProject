@@ -62,7 +62,7 @@ window.onclick = function(event) {
   }
 };
 
-class Landing extends Component {
+class ShowSinglePost extends Component {
   constructor() {
     super();
     this.state = {
@@ -77,36 +77,25 @@ class Landing extends Component {
 
   componentDidMount() {
     const token = localStorage.usertoken;
-    if (token) {
-      const decoded = jwt_decode(token);
-      this.setState({ current_user: decoded.identity.id });
-      if (this.props.type == 1) {
-        axios.defaults.withCredentials = true;
+    console.log('no i didnt!');
 
+    if (token) {
+        const decoded = jwt_decode(token);
+        this.setState({current_user: decoded.identity.id});
+        console.log('yes i did!');
+        axios.defaults.withCredentials = true;
         axios
-          .get("http://127.0.0.1:5000/my_posts/" + this.props.id)
+          .get("http://127.0.0.1:5000/getPost/" + this.props.match.params.id)
           .then(response => {
             this.setState({
-              feed: response.data
+              feed: [response.data]
             });
             console.log(this.state.feed);
           })
           .catch(err => {
             console.log(err);
           });
-      } else {
-        axios.defaults.withCredentials = true;
-        axios
-          .get("http://127.0.0.1:5000/posts")
-          .then(response => {
-            this.setState({
-              feed: response.data
-            });
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      }
+
     }
   }
 
@@ -147,6 +136,7 @@ class Landing extends Component {
               className={listitem.modifier}
               style={{ margin: "0 0 10px 0" }}
             >
+                {console.log(listitem)}
               <Post
                 id="postid"
                 post_id={listitem.id}
@@ -164,9 +154,7 @@ class Landing extends Component {
                 content={listitem.content}
                 current_user={this.state.current_user}
                 history={this.props.history}
-              >
-                .
-              </Post>
+              />
             </li>
           ))}
         </ul>
@@ -174,20 +162,18 @@ class Landing extends Component {
     ) : (
       <div className="container">
         <div>
-            <h1 className="h3 mb-3 font-weight-normal" style={{textAlign:'center', paddingTop:'20px'}}>Register & Post</h1>
           <div class="home-left">
             <Register
               ref={this.registerRef}
               in_home={true}
               history={this.props.history}
-            />
+            ></Register>
           </div>
           <div class="home-right">
             <AddPost ref={this.postRef} in_home={true}></AddPost>
           </div>
-          <div >
+          <div>
             <button
-                style={{alignSelf:'center'}}
               type="submit"
               onClick={this.onSubmit.bind(this)}
               onSubmit={this.onSubmit.bind(this)}
@@ -203,4 +189,4 @@ class Landing extends Component {
   }
 }
 
-export default Landing;
+export default ShowSinglePost;

@@ -10,7 +10,7 @@ import AddPost from './Component/AddPost'
 import EditPost from "./Component/EditPost";
 import {Redirect} from "react-router-dom";
 import FindPartners from "./Component/FindPartners";
-
+import ShowSinglePost from './Component/showSinglePost'
 
 function isLoggedIn() {
   if (localStorage.usertoken) {
@@ -55,6 +55,10 @@ class App extends Component {
              <Route exact path="/FindPartners" render={(props) => (
                      isLoggedIn() ? (
                     <FindPartners {...props} />) : (<Redirect to="/login"/>)
+            )}/>
+            <Route exact path="/Post/:id" render={(props) => (
+                     isLoggedIn() ? (
+                    <ShowSinglePost {...props} />) : (<Redirect to="/login"/>)
             )}/>
           </div>
         </div>
