@@ -156,6 +156,21 @@ class Post extends Component {
       "http://127.0.0.1:3000/EditPost/" + this.props.post_id
     );
   }
+
+  DeletePost() {
+    axios.defaults.withCredentials = true;
+    axios
+      .delete("http://127.0.0.1:5000/deletePost/" + this.props.post_id)
+      .then(response => {
+        window.location.href = "http://127.0.0.1:3000/";
+
+        // Simulate an HTTP redirect:
+        window.location.replace("http://127.0.0.1:3000/");
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
   /**
    * Set the wrapper ref
    */
@@ -235,17 +250,23 @@ class Post extends Component {
                       backgroundSize: "2px 5px",
                       cursor: "pointer"
                     }}
-                  ></div>
+                  />
                   {this.state.showOptions && (
                     <div
                       id="myDropdown"
                       ref={this.setWrapperRef}
                       class="dropdown-content"
                     >
-                      <button onClick={this.showEditPost.bind(this)}>
-                        EDIT{" "}
-                      </button>
-                      <a href="#deletePost">Delete</a>
+                      <a href="#deletePost">
+                        <button onClick={this.showEditPost.bind(this)}>
+                          Edit{" "}
+                        </button>
+                      </a>
+                      <a href="#deletePost">
+                        <button onClick={this.DeletePost.bind(this)}>
+                          Delete{" "}
+                        </button>
+                      </a>
                     </div>
                   )}
                 </div>

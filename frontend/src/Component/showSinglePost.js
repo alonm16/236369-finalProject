@@ -62,7 +62,7 @@ window.onclick = function(event) {
   }
 };
 
-class Landing extends Component {
+class ShowSinglePost extends Component {
   constructor() {
     super();
     this.state = {
@@ -77,38 +77,25 @@ class Landing extends Component {
 
   componentDidMount() {
     const token = localStorage.usertoken;
-    if (token) {
-      const decoded = jwt_decode(token);
-      this.setState({ current_user: decoded.identity.id });
-      if (this.props.type == 1) {
-        axios.defaults.withCredentials = true;
+    console.log('no i didnt!');
 
-        axios
-          .get("http://127.0.0.1:5000/my_posts/" + this.props.id)
-          .then(response => {
-            this.setState({
-              feed: response.data
-            });
-            console.log(this.state.feed);
-          })
-          .catch(err => {
-            console.log(err);
-          });
-      } else {
+    if (token) {
+        const decoded = jwt_decode(token);
+        this.setState({current_user: decoded.identity.id});
+        console.log('yes i did!');
         axios.defaults.withCredentials = true;
         axios
-          .get("http://127.0.0.1:5000/posts")
+          .get("http://127.0.0.1:5000/getPost/" + this.props.match.params.id)
           .then(response => {
             this.setState({
-              feed: response.data
+              feed: [response.data]
             });
             console.log(this.state.feed);
           })
           .catch(err => {
             console.log(err);
           });
-      }
-      console.log(token);
+
     }
   }
 
@@ -149,6 +136,7 @@ class Landing extends Component {
               className={listitem.modifier}
               style={{ margin: "0 0 10px 0" }}
             >
+                {console.log(listitem)}
               <Post
                 id="postid"
                 post_id={listitem.id}
@@ -166,9 +154,7 @@ class Landing extends Component {
                 content={listitem.content}
                 current_user={this.state.current_user}
                 history={this.props.history}
-              >
-                .
-              </Post>
+              />
             </li>
           ))}
         </ul>
@@ -203,4 +189,4 @@ class Landing extends Component {
   }
 }
 
-export default Landing;
+export default ShowSinglePost;

@@ -160,27 +160,32 @@ ul.nav.nav-tabs {
 
 .dropdown-content a {
   color: black;
-  padding: 12px 16px;
   text-decoration: none;
   display: block;
 }
 
-.dropdown a:hover {
+.dropdown-content a:hover {
   background-color: #ddd;
 }
 
 .dropdown-content button {
   color: black;
-  padding: 12px 16px;
+  padding: 12px 12px;
   text-decoration: none;
   display: block;
   background-color: "white";
   background: "white";
   border: "none";
-  padding: "0!important";
   font-family: "arial, sans-serif";
-  color: "#069";
   cursor: "pointer";
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+  clear: both;
+  font-weight: normal;
+  color: #333;
+  white-space: nowrap;
 }
 
 .dropdown button:hover {

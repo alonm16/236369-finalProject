@@ -258,14 +258,13 @@ def addPost():
 @app.route("/deletePost/<int:post_id>", methods=['DELETE'])
 @login_required
 def deletePost(post_id):
+    print('got here!')
     post = Posts.query.get_or_404(post_id)
     if post.user_id != current_user.id:
         return 'Not user post'
     subscribers = post.subscribers
-    for sub in subscribers:
-        notification = Notification(user_id=sub.user_id, post_id=post.id, timestamp=atetime.datetime.now(),
-                                    kind="delete")
-        db.session.add(notification)
+    print('ya')
+    print('did it work?')
     db.session.delete(post)
     db.session.commit()
     return 'True'
@@ -313,7 +312,10 @@ def deleteAccount(user_id):
 @app.route("/getPost/<int:post_id>", methods=['GET'])
 def get_post(post_id):
     post = Posts.query.get_or_404(post_id)
-    return jsonify({'user_id': post.user_id, 'title': post.title, 'country': post.country, 'city': post.city, 'content': post.content,
+    image_file = url_for('static', filename='profile_pics/' + post.traveler.image_file)
+    return jsonify({'user_id': post.user_id,
+                                          'user_name': post.traveler.username, 'user_image': image_file,
+'title': post.title,'date_posted': post.date_posted, 'country': post.country, 'city': post.city, 'content': post.content,
                     'startDate': post.start_date, 'endDate': post.end_date, 'latitude': post.latitude,
                     'longitude': post.longitude})
 
@@ -333,9 +335,9 @@ def update_post(post_id):
     post.end_date = post_update['endDate']
     post.latitude = post_update['latitude']
     post.longitude = post_update['longitude']
-    for element in Posts.query.join(Posts.subscribers).filter_by(post_id=post_id):
+    for element in Subscribe.query.filter_by(post=post):
         user = User.query.get_or_404(element.user_id)
-        post = Posts.query.get_or_404(element.id)
+        post = Posts.query.get_or_404(element.post_id)
         user.notify(post)
     db.session.add(post)
     db.session.commit()
@@ -402,3 +404,27 @@ def is_subscribed(post_id):
     if current_user.is_subscribed(post):
         return 'True'
     return 'False'
+
+
+@app.route("/notifications", methods=['GET'])
+@login_required
+def get_notifications():
+    all_notifications = []
+    print('got here')
+    if current_user.is_authenticated:
+        for notification in (Notification.query.filter_by(user=current_user).order_by(desc(Notification.timestamp)).all()):
+            all_notifications.append({'id': notification.id, 'title': notification.post.title, 'user_id': notification.post.user_id,
+                                'user_name': notification.post.traveler.username,
+                              'timestamp': notification.timestamp, 'post_id': notification.post_id,
+                                'kind': notification.kind})
+    print(all_notifications)
+    return jsonify(all_notifications)
+
+
+@app.route('/delete_notification/<int:notification_id>', methods=['POST', 'DELETE'])
+@login_required
+def deleteNotification(notification_id):
+    notification = Notification.query.get_or_404(notification_id)
+    db.session.delete(notification)
+    db.session.commit()
+    return 'True'
