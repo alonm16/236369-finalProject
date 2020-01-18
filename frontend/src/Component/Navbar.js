@@ -23,7 +23,6 @@ class Navbar extends Component {
   };
 
   handleClickOutside(event) {
-    console.log("bla");
     if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
       this.setState({
         showNotifications: !this.state.showNotifications
@@ -84,12 +83,10 @@ class Navbar extends Component {
           this.setState({
             notifications: response.data
           });
-          console.log(this.state.notifications);
         })
         .catch(err => {
           console.log(err);
         });
-      console.log(token);
     }
     document.addEventListener("mousedown", this.handleClickOutside);
   }
@@ -109,8 +106,6 @@ class Navbar extends Component {
     this.setState({
       showNotifications: !this.state.showNotifications
     });
-    console.log(this.state.showNotifications);
-    console.log("got here");
   }
 
   render() {

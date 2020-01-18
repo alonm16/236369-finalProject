@@ -242,10 +242,12 @@ class Post extends Component {
 
         <CardBody>
           <CardTitle>
-            <b>{this.props.title}</b>
+            <div style={{ float: "left" }}>
+            <h5 style={{textDecoration:"underline"}}>{this.props.title}</h5>
+            </div>
             <div style={{ float: "right" }}>
-              {this.props.current_user === this.props.user_id && (
-                <div class="dropdown">
+              {this.state.current_user === this.props.user_id && (
+                <div class="dropdown" style={{paddingRight:'15px'}}>
                   <div
                     onClick={this.showOptions.bind(this)}
                     style={{
@@ -254,7 +256,7 @@ class Post extends Component {
                       backgroundImage:
                         "radial-gradient(circle at center, black 2px, transparent 2px)",
                       backgroundSize: "2px 5px",
-                      cursor: "pointer"
+                      cursor: "pointer",
                     }}
                   />
                   {this.state.showOptions && (
@@ -278,10 +280,11 @@ class Post extends Component {
                 </div>
               )}
             </div>
-            <div style={{ float: "center", paddingRight:'100px' }}>{this.format_date(this.props.start_date)} &nbsp;&nbsp;to&nbsp;&nbsp;
+            <div style={{ float: "right" , paddingRight:'15px' }}>{this.format_date(this.props.start_date)} &nbsp;&nbsp;to&nbsp;&nbsp;
               {this.format_date(this.props.end_date)}</div>
           </CardTitle>
-          <CardText style={{ float: "left" }}>{this.props.content}</CardText>
+          <br/>
+          <CardText style={{ float: "left" , width:'700px'}}>{this.props.content}</CardText>
           <text style={{ float: "right" }}>
             <button
               onClick={this.toggleMapPopup.bind(this)}
@@ -307,11 +310,12 @@ class Post extends Component {
               />
             ) : null}
           </text>
+         
+          <text style={{ float: "right",paddingRight:'10px',paddingTop:'10px' }}>{this.props.city}&nbsp;,{this.props.country}</text>
         </CardBody>
-        {this.props.current_user !== this.props.user_id && (
+        {this.state.current_user !== this.props.user_id && (
           <Button
-            style={{ width: "200px" }}
-            variant="outline-primary"
+            style={{ width: "150px", backgroundColor:"green", marginLeft:'8px', marginBottom:'4px' }}
             onClick={
               this.state.isSubscribed
                 ? this.UnsubscribePost.bind(this)

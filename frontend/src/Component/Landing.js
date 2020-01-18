@@ -79,7 +79,7 @@ class Landing extends Component {
     const token = localStorage.usertoken;
     if (token) {
       const decoded = jwt_decode(token);
-      this.setState({ current_user: decoded.identity.id });
+      //this.setState({ current_user: decoded.identity.id });
       if (this.props.type == 1) {
         axios.defaults.withCredentials = true;
 
@@ -110,6 +110,10 @@ class Landing extends Component {
     }
   }
 
+ componentWillUpdate(nextProps, nextState, nextContext) {
+    this.componentDidMount();
+ }
+
   onSubmit(e) {
     e.preventDefault();
     const reg = this.registerRef.current;
@@ -139,8 +143,9 @@ class Landing extends Component {
 
   render() {
     return localStorage.usertoken ? (
-      <div className="container" style={{paddingLeft:'90px' ,backgroundColor:"#66ccff"}}>
-        <ul className="list-unstyled" style={{paddingTop:'20px', paddingBottom:'20px'}}>
+      <div className="container" style={{paddingLeft:'90px' ,backgroundColor:"#4da6ff"}}>
+        {this.state.feed.length>0 &&
+        (<ul className="list-unstyled" style={{paddingTop:'20px', paddingBottom:'20px'}}>
           {this.state.feed.map(listitem => (
             <li
               key={listitem.id}
@@ -162,14 +167,13 @@ class Landing extends Component {
                 latitude={listitem.latitude}
                 longitude={listitem.longitude}
                 content={listitem.content}
-                current_user={this.state.current_user}
                 history={this.props.history}
               >
                 .
               </Post>
             </li>
           ))}
-        </ul>
+        </ul>)}
       </div>
     ) : (
       <div className="container">
@@ -188,7 +192,7 @@ class Landing extends Component {
             />
           </div>
           <div class="home-right">
-            <AddPost ref={this.postRef} in_home={true}></AddPost>
+            <AddPost ref={this.postRef} in_home={true}/>
           </div>
           <div  style={{ float:'right', paddingRight:'350px', paddingBottom:'20px'}}>
             <button

@@ -204,7 +204,7 @@ def get_markers():
     radius = float(request.args.get('radius'))
     start_date = request.args.get('start')
     end_date = request.args.get('end')
-    if request.args.get('onlyFollowing'):
+    if request.args.get('onlyFollowing') == 'true':
         for cur_post in Posts.query.all():
             cur_user = User.query.get_or_404(cur_post.user_id)
             if current_user.is_following(cur_user):
@@ -263,7 +263,6 @@ def deletePost(post_id):
     post = Posts.query.get_or_404(post_id)
     if post.user_id != current_user.id:
         return 'Not user post'
-    subscribers = post.subscribers
     db.session.delete(post)
     db.session.commit()
     return 'True'
@@ -312,9 +311,8 @@ def deleteAccount(user_id):
 def get_post(post_id):
     post = Posts.query.get_or_404(post_id)
     image_file = url_for('static', filename='profile_pics/' + post.traveler.image_file)
-    return jsonify({'user_id': post.user_id,
-                                          'user_name': post.traveler.username, 'user_image': image_file,
-'title': post.title, 'date_posted': post.date_posted, 'country': post.country, 'city': post.city, 'content': post.content,
+    return jsonify({'user_id': post.user_id, 'user_name': post.traveler.username, 'user_image': image_file,
+                    'title': post.title, 'date_posted': post.date_posted, 'country': post.country, 'city': post.city, 'content': post.content,
                     'start_date': post.start_date, 'end_date': post.end_date, 'latitude': post.latitude,
                     'longitude': post.longitude})
 

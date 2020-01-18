@@ -146,7 +146,7 @@ class FindPartners extends Component {
                                      selected={this.state.startDate}
                                      onChange={this.handleChangeStart}
                                      dateFormat="dd/MM/yyyy"
-                                     minDate = {new Date()}
+
                                     />
                                     <br></br>
                          <label htmlFor="name">End date</label><br></br>
