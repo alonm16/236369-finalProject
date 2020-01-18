@@ -19,7 +19,7 @@ class Navbar extends Component {
     username: "",
     search_msg: "Search for a user",
     showNotifications: false,
-      notifications: []
+    notifications: []
   };
 
   handleClickOutside(event) {
@@ -52,7 +52,6 @@ class Navbar extends Component {
     });
   }
 
-
   logOut(e) {
     e.preventDefault();
     axios.defaults.withCredentials = true;
@@ -78,7 +77,7 @@ class Navbar extends Component {
       this.setState({
         current_user: decoded.identity.id
       });
-            axios.defaults.withCredentials = true;
+      axios.defaults.withCredentials = true;
       axios
         .get("http://127.0.0.1:5000/notifications")
         .then(response => {
@@ -93,13 +92,11 @@ class Navbar extends Component {
       console.log(token);
     }
     document.addEventListener("mousedown", this.handleClickOutside);
-
-    }
+  }
 
   componentWillUnmount() {
     document.removeEventListener("mousedown", this.handleClickOutside);
   }
-
 
   /**
    * Set the wrapper ref
@@ -130,7 +127,7 @@ class Navbar extends Component {
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/register" className="nav-link" style={{color:"white"}}>
+          <Link to="/register" className="nav-link" style={{ color: "white" }}>
             Register
           </Link>
         </li>
@@ -145,7 +142,11 @@ class Navbar extends Component {
                 </Link>
               </li>
         <li className="nav-item">
-          <Link to={"/users/" + this.state.current_user} className="nav-link"  style={{color:"white"}}>
+          <Link
+            to={"/users/" + this.state.current_user}
+            className="nav-link"
+            style={{ color: "white" }}
+          >
             User
           </Link>
         </li>
@@ -165,19 +166,24 @@ class Navbar extends Component {
           />
 
           <Button
-            variant="outline-primary"  style={{color:"white"}}
+            variant="outline-primary"
+            style={{ color: "white" }}
             onClick={this.get_user.bind(this)}
           >
             Search
           </Button>
         </Form>
         <li className="nav-item">
-          <Link to="/AddPost" className="nav-link"  style={{color:"white"}}>
+          <Link to="/AddPost" className="nav-link" style={{ color: "white" }}>
             New Post
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/FindPartners" className="nav-link"  style={{color:"white"}}>
+          <Link
+            to="/FindPartners"
+            className="nav-link"
+            style={{ color: "white" }}
+          >
             Find Partners
           </Link>
         </li>
@@ -188,7 +194,7 @@ class Navbar extends Component {
               style={{
                 cursor: "pointer"
               }}
-            > <img src={require('../bell5.png')} width="25" height="25" /></div>
+            > <img src={require('../bell.png')} width="25" height="25" /></div>
             {this.state.showNotifications && (
               <div
                 id="myDropdown"
@@ -203,7 +209,7 @@ class Navbar extends Component {
                       style={{ margin: "0 0 10px 0" }}
                     >
                       <Notifications
-                        id="notificationid"
+                        id={listitem.id}
                         post_id={listitem.post_id}
                         title={listitem.title}
                         kind={listitem.kind}
@@ -221,7 +227,12 @@ class Navbar extends Component {
           </b>
         </li>
         <li className="nav-item">
-          <a href="" onClick={this.logOut.bind(this)} className="nav-link"  style={{color:"white"}}>
+          <a
+            href=""
+            onClick={this.logOut.bind(this)}
+            className="nav-link"
+            style={{ color: "white" }}
+          >
             Logout
           </a>
         </li>
@@ -229,9 +240,11 @@ class Navbar extends Component {
     );
 
     return (
-
       <div>
-        <nav className="navbar navbar-expand-lg navbar-dark  rounded" style={{backgroundColor:"#2aa700"}}>
+        <nav
+          className="navbar navbar-expand-lg navbar-dark  rounded"
+          style={{ backgroundColor: "#2aa700" }}
+        >
           <button
             className="navbar-toggler"
             type="button"
@@ -248,7 +261,6 @@ class Navbar extends Component {
             className="collapse navbar-collapse justify-content-md-center col-md-12 "
             id="navbarsExample10"
           >
-
             {localStorage.usertoken ? userLink : loginRegLink}
           </div>
         </nav>

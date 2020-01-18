@@ -314,8 +314,8 @@ def get_post(post_id):
     image_file = url_for('static', filename='profile_pics/' + post.traveler.image_file)
     return jsonify({'user_id': post.user_id,
                                           'user_name': post.traveler.username, 'user_image': image_file,
-'title': post.title,'date_posted': post.date_posted, 'country': post.country, 'city': post.city, 'content': post.content,
-                    'startDate': post.start_date, 'endDate': post.end_date, 'latitude': post.latitude,
+'title': post.title, 'date_posted': post.date_posted, 'country': post.country, 'city': post.city, 'content': post.content,
+                    'start_date': post.start_date, 'end_date': post.end_date, 'latitude': post.latitude,
                     'longitude': post.longitude})
 
 
@@ -420,9 +420,10 @@ def get_notifications():
     return jsonify(all_notifications)
 
 
-@app.route('/delete_notification/<int:notification_id>', methods=['POST', 'DELETE'])
+@app.route('/delete_notification/<int:notification_id>', methods=['DELETE'])
 @login_required
 def deleteNotification(notification_id):
+    print('got here tho')
     notification = Notification.query.get_or_404(notification_id)
     db.session.delete(notification)
     db.session.commit()
