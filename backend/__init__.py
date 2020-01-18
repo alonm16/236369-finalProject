@@ -13,6 +13,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:banana@localhost/travel'
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 app.config['JWT_SECRET_KEY'] = 'secret'
+app.config['SQLALCHEMY_ENGINE_OPTIONS'] = dict(isolation_level = 'SERIALIZABLE')
 app.debug = True
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
