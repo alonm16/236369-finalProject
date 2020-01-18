@@ -181,6 +181,8 @@ export class Profile extends Component{
                       </div>
                     </div>
                     </div>
+
+                    {(this.state.current_user == this.props.match.params.id || this.state.isFollowing) &&<div>
                     <Nav tabs>
                           <NavItem>
                             <NavLink
@@ -213,18 +215,19 @@ export class Profile extends Component{
 
                         </Nav>
 
-            {this.state.aboutFlag ? <About id ={this.props.match.params.id} updateInfo={this.updateMenuInfo.bind(this)}
-                    updatePic={this.updateMenuPic.bind(this)} /> :null}
-                {this.state.followersFlag  ? <Users id ={this.props.match.params.id} type={1} flag={this.state.isFollowing}/> : null}
-                {this.state.followingFlag  ? <Users id ={this.props.match.params.id} type={2} flag={this.state.isFollowing}/> : null}
-                {this.state.postsFlag  ? <Landing type ={1} id ={this.props.match.params.id}/> : null}
+                    {this.state.aboutFlag ? <About id ={this.props.match.params.id} updateInfo={this.updateMenuInfo.bind(this)}
+                        updatePic={this.updateMenuPic.bind(this)} /> :null}
+                    {this.state.followersFlag  ? <Users id ={this.props.match.params.id} type={1} flag={this.state.isFollowing}/> : null}
+                    {this.state.followingFlag  ? <Users id ={this.props.match.params.id} type={2} flag={this.state.isFollowing}/> : null}
+                    {this.state.postsFlag  ? <Landing type ={1} id ={this.props.match.params.id}/> : null}
+                    </div>}
                     <div className="text-center"     style={{paddingBottom:'20px'}}>
-                    {(this.state.current_user == this.props.match.params.id) && <Button
-                              onClick={this.deleteAccount.bind(this)}
-                              variant="outline-danger"
-                            >
-                              Delete Account
-                            </Button> }
+                {(this.state.current_user == this.props.match.params.id) && <Button
+                          onClick={this.deleteAccount.bind(this)}
+                          variant="outline-danger"
+                        >
+                          Delete Account
+                        </Button> }
                     </div>
             </div>
 

@@ -110,17 +110,28 @@ export class EditPost extends Component {
         const { name, value } = e.target;
 
         switch (name) {
-            case 'username':
-                this.setState({user_taken: 0});
-                errors.username =
-                  value.length < 1 || value.length > 20
-                    ? 'Username is not valid!'
+             case 'title':
+                errors.title =
+                  value.length < 1 || value.length > 30
+                    ? 'Title is not valid!'
                     : '';
                 break;
-                case 'last_name':
-                errors.last_name =
-                  value.length > 20
-                    ? 'Last name is too long'
+            case 'country':
+                errors.country =
+                  value.length < 1 || value.length > 30
+                    ? 'Country is not valid!'
+                    : '';
+                break;
+            case 'city':
+                errors.city =
+                  value.length < 1 || value.length > 30
+                    ? 'City is not valid!'
+                    : '';
+                break;
+            case 'content':
+                errors.content =
+                  value.length < 1 || value.length > 5000
+                    ? 'Content is not valid!'
                     : '';
                 break;
               default:
@@ -150,6 +161,30 @@ export class EditPost extends Component {
         });
 
   }
+
+    emptyFields()
+  {
+      const errors = this.state.errors;
+      errors.title =
+                  this.state.title.length < 1
+                    ? 'Title is not valid!'
+                    : '';
+      errors.country =
+                  this.state.country.length < 1
+                    ? 'Country is not valid!'
+                    : '';
+      errors.city =
+                  this.state.city.length < 1
+                    ? 'City is not valid!'
+                    : '';
+      errors.content =
+                  this.state.content.length < 1
+                    ? 'Content is not valid!'
+                    : '';
+
+
+  }
+
   onSubmit(e) {
     e.preventDefault()
     this.setState({invalid: 0});
@@ -169,6 +204,8 @@ export class EditPost extends Component {
       latitude: this.state.markers[0]['lat'] ,
       longitude: this.state.markers[0]['lng']
     }
+
+    this.emptyFields();
 
      if (validateForm(this.state.errors)) {
          update(updatedUser).then(res => {
@@ -192,7 +229,8 @@ export class EditPost extends Component {
   render() {
     return (
       <div className="container">
-          <div className="col-md-6 mt-3 mx-auto" style={{paddingBottom:'20px'}}>
+          <div className="row">
+          <div className="mt-5 mx-auto" style={{paddingBottom:'20px'}}>
      <form noValidate onSubmit={this.onSubmit}>
               <h1 className="h3 mb-3 font-weight-normal">Update Post</h1>
               <div className="form-group">
@@ -200,7 +238,7 @@ export class EditPost extends Component {
                   Your update attempt is invalid. Please try again!
                 </Alert> }
 
-             <Map
+             <Map style={{width:'600px', height:'400px'}}
             center={this.state.center}
             onClick={this.addMarker}
             zoom={13}
@@ -229,6 +267,7 @@ export class EditPost extends Component {
             </Marker>
             )}
           </Map>
+                  <br/>
                 <label htmlFor="name">Title</label>
                 <input
                   type="text"
@@ -242,6 +281,35 @@ export class EditPost extends Component {
                  {this.state.errors.title.length > 0 &&
                 <span className='error'>{this.state.errors.title}</span>}
               </div>
+         <div className="form-group">
+             <table>
+                 <tr>
+                     <td>
+                            <label htmlFor="name">Start date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <DatePicker
+                             name="startDate"
+                             selected={new Date(this.state.startDate)}
+                             onChange={this.handleChangeStart}
+                             dateFormat="dd/MM/yyyy"
+                             minDate = {new Date()}
+
+                            />
+                     </td>
+                     <td>
+                               <label htmlFor="name">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;End date
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                            <DatePicker
+                             name="endDate"
+                             selected={new Date(this.state.endDate)}
+                             onChange={this.handleChangeEnd}
+                             dateFormat="dd/MM/yyyy"
+                             minDate = {new Date()}
+                            />
+                     </td>
+                 </tr>
+             </table>
+           </div>
+
               <div className="form-group">
                 <label htmlFor="name">Country</label>
                 <input
@@ -268,42 +336,18 @@ export class EditPost extends Component {
                   noValidate
                 />
                  {this.state.errors.city.length > 0 &&
-                <span className='error'>{this.state.city}</span>}
+                <span className='error'>{this.state.errors.city}</span>}
               </div>
-              <div className="form-group">
-                <label htmlFor="name">Content</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="content"
-                  placeholder="Enter a Content"
-                  value={this.state.content}
-                  onChange={this.onChange}
-                  noValidate
-                />
-                 {this.state.errors.content.length > 0 &&
-                <span className='error'>{this.state.content}</span>}
-              </div>
-              <div className="form-group">
-                  <label htmlFor="name">Start date</label><br></br>
-                <DatePicker
-                 name="startDate"
-                 selected={new Date(this.state.startDate)}
-                 onChange={this.handleChangeStart}
-                 dateFormat="dd/MM/yyyy"
-                 minDate = {new Date()}
 
-                />
-              </div>
-              <div className="form-group">
-                  <label htmlFor="name">End date</label><br></br>
-                <DatePicker
-                 name="endDate"
-                 selected={new Date(this.state.endDate)}
-                 onChange={this.handleChangeEnd}
-                 dateFormat="dd/MM/yyyy"
-                 minDate = {new Date()}
-                />
+
+             <div className="form-group">
+                <label htmlFor="name">Content</label>
+                  <br></br>
+               <textarea name="content" placeholder="Enter Content" cols="75" rows="5"
+                         value={this.state.content} onChange={this.onChange}></textarea>
+                  <br/>
+                     {this.state.errors.content.length  > 0 &&
+                                     <span className='error'>{this.state.errors.content}</span> }
               </div>
               <button
                 type="submit"
@@ -313,6 +357,7 @@ export class EditPost extends Component {
               </button>
             </form>
 
+          </div>
           </div>
       </div>
     )

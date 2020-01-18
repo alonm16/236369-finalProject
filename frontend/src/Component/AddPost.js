@@ -54,6 +54,7 @@ class AddPost extends Component {
           title: '',
           country: '',
           content: '',
+          city: ''
       },
       invalid: 0
     }
@@ -66,6 +67,8 @@ class AddPost extends Component {
     this.setState({
       startDate: date
     });
+    if(date>this.state.endDate)
+        this.handleChangeEnd(date);
   };
 
   handleChangeEnd = date => {
@@ -110,8 +113,32 @@ class AddPost extends Component {
         }
         this.setState({errors, [name]: value});
   }
+
+   emptyFields()
+  {
+      const errors = this.state.errors;
+      errors.title =
+                  this.state.title.length < 1
+                    ? 'Title is not valid!'
+                    : '';
+      errors.country =
+                  this.state.country.length < 1
+                    ? 'Country is not valid!'
+                    : '';
+      errors.city =
+                  this.state.city.length < 1
+                    ? 'City is not valid!'
+                    : '';
+      errors.content =
+                  this.state.content.length < 1
+                    ? 'Content is not valid!'
+                    : '';
+
+
+  }
+
   onSubmit(e) {
-    e.preventDefault()
+    e.preventDefault();
     this.setState({invalid: 0});
     if(this.state.markers.length==0)
         {
@@ -129,14 +156,16 @@ class AddPost extends Component {
       longitude: this.state.markers[0]['lng']
     };
 
+    this.emptyFields();
+
     if(this.props.in_home)
         return newPost;
 
      if (validateForm(this.state.errors)) {
          addPost(newPost).then(res => {
-             if (res == 'Created') {
+          /*   if (res == 'Created') {
                  this.props.history.push(`/`)
-             }
+             }*/
          })
      }
      else{
@@ -160,6 +189,9 @@ class AddPost extends Component {
             <form noValidate onSubmit={this.onSubmit}>
               <h1 className="h3 mb-3 font-weight-normal">Create new post</h1>
               <div className="form-group">
+                      {this.state.invalid >0 &&  <Alert color="danger">
+                  Your Post is invalid. Please try again!
+                </Alert> }
                     {this.state.invalid >0 &&  this.state.markers.length==0 && <Alert color="danger">
                   Please choose a location on map
                 </Alert> }
@@ -191,6 +223,7 @@ class AddPost extends Component {
             </Marker>
             )}
           </Map>
+                  <br/>
                 <label htmlFor="name">Title</label>
                 <input
                   type="text"
@@ -201,6 +234,8 @@ class AddPost extends Component {
                   onChange={this.onChange}
                   noValidate
                 />
+                {this.state.errors.title.length  > 0 &&
+                                     <span className='error'>{this.state.errors.title}</span>}
               </div>
                 <div>
                     <table>
@@ -243,6 +278,8 @@ class AddPost extends Component {
                   onChange={this.onChange}
                   noValidate
                 />
+                  {this.state.errors.country.length  > 0 &&
+                                     <span className='error'>{this.state.errors.country}</span>}
               </div>
               <div className="form-group">
                 <label htmlFor="name">City</label>
@@ -255,12 +292,17 @@ class AddPost extends Component {
                   onChange={this.onChange}
                   noValidate
                 />
+                      {this.state.errors.city.length > 0 &&
+                                     <span className='error'>{this.state.errors.city}</span>}
               </div>
               <div className="form-group">
                 <label htmlFor="name">Content</label>
                   <br></br>
                <textarea name="content" placeholder="Enter Content" cols="75" rows="5"
                          value={this.state.content} onChange={this.onChange}></textarea>
+                  <br/>
+                     {this.state.errors.content.length  > 0 &&
+                                     <span className='error'>{this.state.errors.content}</span> }
               </div>
                 { !this.props.in_home &&<button
                 type="submit"

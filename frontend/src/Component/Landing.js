@@ -177,6 +177,7 @@ class Landing extends Component {
     ) : (
       <div className="container">
         <div>
+            <h1 className="h3 mb-3 font-weight-normal">Register & Post</h1>
           <div class="home-left">
             <Register
               ref={this.registerRef}

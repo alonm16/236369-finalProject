@@ -219,7 +219,7 @@ def get_markers():
             continue
         cur_user = User.query.get_or_404(cur_post.user_id)
         if current_user.is_following(cur_user) or (cur_post.is_in_radius(lat, lng, radius) and
-                                                   date_between( cur_post.start_date, cur_post.end_date,start_date, end_date)):
+                                                   date_between(cur_post.start_date, cur_post.end_date,start_date, end_date)):
             markers.append({'lat': cur_post.latitude, 'lng': cur_post.longitude})
             descriptions.append({'title': cur_post.title, 'user_name': cur_user.username,
                                            'endDate': cur_post.end_date, 'startDate': cur_post.start_date,
@@ -244,7 +244,8 @@ def follow(user_id):
 @login_required
 def addPost():
     data = request.get_json()
-    if not data or not 'title' in data or not 'content' in data:
+    if not data or not 'title' in data or not 'content' in data or not 'startDate'in data or not 'endDate' in data\
+            or not 'city' in data or not 'longitude' in data or not 'latitude' in data:
         abort(400)
 
     post = Posts(title=data['title'], date_posted=datetime.datetime.now(), start_date=data['startDate'],

@@ -72,7 +72,6 @@ class Post extends Component {
       showOptions: !this.state.showOptions
     });
     console.log(this.state.showOptions);
-    console.log("got here");
   }
 
   UnsubscribePost() {
