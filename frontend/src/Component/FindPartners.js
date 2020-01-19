@@ -97,6 +97,7 @@ class FindPartners extends Component {
         ,onlyFollowing: false}
     })
     .then(response => {
+        this.setState({markers:[]});
         this.setState({
             markers: response.data.markers,
             descriptions: response.data.descriptions

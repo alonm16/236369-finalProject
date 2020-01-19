@@ -407,7 +407,6 @@ def is_subscribed(post_id):
 @login_required
 def get_notifications():
     all_notifications = []
-    print('got here')
     if current_user.is_authenticated:
         for notification in (Notification.query.filter_by(user=current_user).order_by(desc(Notification.timestamp)).all()):
             all_notifications.append({'id': notification.id, 'title': notification.post.title, 'user_id': notification.post.user_id,
