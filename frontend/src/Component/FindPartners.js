@@ -162,7 +162,9 @@ class FindPartners extends Component {
                        <label htmlFor="name">Radius</label>
                                     <input
                                         style={{width:"70%"}}
-                                      type="text"
+                                      type="number"
+                                      min="0"
+                                      step="any"
                                       className="form-control"
                                       name="radius"
                                       placeholder="Enter a Radius"
